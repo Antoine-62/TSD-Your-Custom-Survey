@@ -10,6 +10,6 @@ Frontend : Vue.js
 Backend : Flask
 
 ## Students
-The project will be realize by :
+The project will be realized by :
 * Antoine Landrieu
 * Thomas Gurtler

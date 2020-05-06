@@ -18,7 +18,7 @@ git clone https://github.com/Antoine-62/TSD-Your-Custom-Survey.git
 ```
 ### Backend
 
-Once downloaded, open the terminal in the project and execute the following commands
+Once downloaded, rename the folder project by "TSD-Your-Custom-Survey", then open the terminal in the project and execute the following commands
 ```
 venv\Scripts\activate
 pip install flask

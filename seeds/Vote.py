@@ -1,7 +1,7 @@
 #Seeders to create some Votes(without questions)
 
 from flask_seeder import Seeder, Faker, generator
-from models import Vote
+from TSDYourCustomSurvey.models import Vote
 
 # All seeders inherit from Seeder
 class VoteSeeder(Seeder):

@@ -1,7 +1,7 @@
 #Seeders to create some surveys(without questions)
 
 from flask_seeder import Seeder, Faker, generator
-from models import Survey
+from TSDYourCustomSurvey.models import Survey
 
 # All seeders inherit from Seeder
 class BSurveySeeder(Seeder):

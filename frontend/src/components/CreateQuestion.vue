@@ -196,6 +196,7 @@ export default {
       
     },
     addSurvey() {
+      this.addpayload();
       const payload ={
             title: this.titleSurvey,
             category: this.category,
@@ -213,15 +214,7 @@ export default {
         });
     },
 
-    onSubmit(event) {
-      event.preventDefault();
-      this.submitting = true
-        this.clearStatus()
-        if (this.invalidStatement||this.invalidAnswer1||this.invalidAnswer2) {
-          this.error=true
-				return 
-			}
-        
+    addpayload(){
         const payload = {
             number: this.numberOfQuestion,
             title: this.addQuestionForm.title,
@@ -233,6 +226,18 @@ export default {
             answer5: this.addQuestionForm.Answer5,
         };
       this.payloadQuestion.push(payload);
+    },
+
+    onSubmit(event) {
+      event.preventDefault();
+      this.submitting = true
+        this.clearStatus()
+        if (this.invalidStatement||this.invalidAnswer1||this.invalidAnswer2) {
+          this.error=true
+				return 
+			}
+        this.addpayload();
+        
       this.numberOfQuestion=this.numberOfQuestion+1;
       this.initForm();
     },

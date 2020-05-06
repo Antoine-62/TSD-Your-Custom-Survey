@@ -1,7 +1,7 @@
 #Seeders to create some Users(without questions)
 
 from flask_seeder import Seeder, Faker, generator
-from models import User
+from TSDYourCustomSurvey.models import User
 
 # All seeders inherit from Seeder
 class AUserSeeder(Seeder):
@@ -19,7 +19,7 @@ class AUserSeeder(Seeder):
         "phone": "+33632145678",
         "email": "anto@pp.com",
         "password": "12345",
-        "right": "1",
+        "right": 1,
       }
     )
     

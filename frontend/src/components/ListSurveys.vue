@@ -19,7 +19,7 @@
           <thead>
             <tr>
               <th scope="Title">Title</th>
-              <th scope="Categorie">Author</th>
+              <th scope="Categorie">Categorie</th>
               <th scope="Number">Number of question</th>
               <th></th>
             </tr>
@@ -78,15 +78,18 @@ export default {
         let category2=this.searchCategory.toLowerCase()
         let name1Split=name1.split("")
         let name2Split=name2.split("")
+        var c=0;
         if(name2 !== '')
         {
-            for(var i=0; i<name1Split.length;i++)
+            for(var i=0; i<name2Split.length;i++)
             {
                 if (name2Split[i] === (name1Split[i])) {
-                  return post;
+                  c++;
                 } 
             }
+            if(c!==name2Split.length){
             return null
+            }
         }
         if(category2 !== '')
         {

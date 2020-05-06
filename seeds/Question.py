@@ -1,7 +1,7 @@
 #Seeders to create some questions
 
 from flask_seeder import Seeder, Faker, generator
-from models import Question
+from TSDYourCustomSurvey.models import Question
 
 # All seeders inherit from Seeder
 class QuestionSeeder(Seeder):
@@ -14,7 +14,7 @@ class QuestionSeeder(Seeder):
       cls=Question,
       init={
         "idS": 1,
-        "Statement": "Do you know Napoleon ?",
+        "statement": "Do you know Napoleon ?",
         "number": 1,
         "answer1": "yes",
         "answer2": "no",
@@ -28,7 +28,7 @@ class QuestionSeeder(Seeder):
       cls=Question,
       init={
         "idS": 1,
-        "Statement": "His nationality is :",
+        "statement": "His nationality is :",
         "number": 2,
         "answer1": "French",
         "answer2": "Russian",
@@ -42,7 +42,7 @@ class QuestionSeeder(Seeder):
       cls=Question,
       init={
         "idS": 2,
-        "Statement": "Do you prefer :",
+        "statement": "Do you prefer :",
         "number": 1,
         "answer1": "Gladiator",
         "answer2": "Terminator 1",
@@ -55,7 +55,7 @@ class QuestionSeeder(Seeder):
       cls=Question,
       init={
         "idS": 2,
-        "Statement": "Do you prefer :",
+        "statement": "Do you prefer :",
         "number": 2,
         "answer1": "Charlie Chaplin",
         "answer2": "Leonardo Di Caprio",
@@ -68,7 +68,7 @@ class QuestionSeeder(Seeder):
       cls=Question,
       init={
         "idS": 2,
-        "Statement": "Do you prefer :",
+        "statement": "Do you prefer :",
         "number": 3,
         "answer1": "Albert Hitchcock",
         "answer2": "James Cameron",

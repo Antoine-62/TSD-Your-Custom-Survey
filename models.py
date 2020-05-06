@@ -8,7 +8,7 @@ class User(db.Model): #the User table
     idU = db.Column(db.Integer, primary_key=True, autoincrement=True)
     lastName = db.Column(db.String, nullable=False)
     firstName = db.Column(db.String, nullable=False)
-    birthdate = db.Column(db.Date, nullable=False)
+    birthdate = db.Column(db.String, nullable=False)
     gender = db.Column(db.String, nullable=False)
     phone = db.Column(db.String, nullable=False)
     email = db.Column(db.String, nullable=False)
@@ -131,9 +131,9 @@ class Question(db.Model):
         return '<Question %r %r>' % self.statement  % self.number
     
     # For seeds
-    def __init__(self, idS=None, Statement=None, number=None, answer1=None, answer2=None, answer3=None, answer4=None, answer5=None):
+    def __init__(self, statement=None, number=None, answer1=None, answer2=None, answer3=None, answer4=None, answer5=None, idS=None):
         self.idS = idS
-        self.statement = Statement
+        self.statement = statement
         self.number = number
         self.answer1 = answer1
         self.answer2 = answer2

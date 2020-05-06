@@ -50,6 +50,7 @@ flask run
 ### Frontend
 To set the backend, please execute the following commands
 ```
+npm install -g @vue/cli
 cd frontend
 npm install
 npm install axios

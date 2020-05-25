@@ -62,7 +62,8 @@ class User(db.Model): #the User table
         self.gender = gender
         self.phone = phone
         self.email = email
-        self.password = generate_password_hash(password)
+        self.password =password
+        #self.password = generate_password_hash(password)
         self.right = right
         
     def __str__(self):

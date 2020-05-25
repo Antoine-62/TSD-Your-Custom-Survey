@@ -1,6 +1,12 @@
 <template>
  <div id="container">
     <h1>Survey : {{survey.title}}</h1>
+    <button 
+        type="button"
+        class="btn btn-danger btn-sm"
+        @click="onAddQuestion(survey)"
+        >
+        Add a new question</button>
     <table id="listSurvey">
           <thead>
             <tr>
@@ -38,7 +44,7 @@ import axios from 'axios';
 import router from '../router';
 
 export default {
-  name: 'ListSuverys',
+  name: 'ListQuestion',
   data() {
     return {
       idS: '',
@@ -47,6 +53,13 @@ export default {
     };
   },   
   methods: {
+    onAddQuestion(survey){
+      const idS = survey.idS
+        router.push({ name: 'AddQuestion', params : {
+          idS: idS,
+          }
+        })
+    },
     getSurveys() {
       const path = 'http://localhost:5000';
       const payload = {

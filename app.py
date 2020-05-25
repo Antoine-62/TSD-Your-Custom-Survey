@@ -184,6 +184,12 @@ def add_question():
                        answerType=post_data.get('answerType'),
                        idS=post_data.get('idS'))
         db.session.add(newQuestion)
+        status = post_data.get('status')
+        if status is not None:
+            idS=post_data.get('idS')
+            survey = Survey.query.filter_by(idS=idS).first()
+            nbOfQuestions = survey.nbOfQuestions + 1
+            survey.nbOfQuestions = nbOfQuestions
         db.session.commit()
     return jsonify(response_object)
     

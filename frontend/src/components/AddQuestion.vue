@@ -1,8 +1,8 @@
 <template>
  <div>
-    <h1>Title : {{this.titleSurvey}}</h1>
-    <h1>Category : {{this.category}}</h1>
-    <h2>Question n°{{numberOfQuestion}}</h2>
+    <h1>Title : {{survey.title}}</h1>
+    <h1>Category : {{survey.category}}</h1>
+    <h2>Question n°{{survey.nbOfQuestions+1}}</h2>
     <form
      id="app"
      @submit="onSubmit"
@@ -111,14 +111,6 @@
             value="Submit"
         >
     </p>
-
-    <button
-        type="button"
-        class="btn btn-danger btn-sm"
-        @click="addSurvey()"
-    >
-    Save Survey</button>
-
     </form>
     <p v-if="error" class="error-message">
 		❗Please fill out all required fields
@@ -135,16 +127,14 @@ import router from '../router';
 import swal from 'sweetalert';
 
 export default {
-  name: 'CreateQuestion',
+  name: 'AddQuestion',
   data() {
     return {
         submitting: false,
         error: false,
         success: false,
-        titleSurvey: '',
-        category: '',
-        numberOfQuestion: 1,
-        payloadQuestion: [],
+        idS: '',
+        survey: '',
       addQuestionForm: {
         number: '',
         answerType: '',
@@ -171,81 +161,51 @@ export default {
   },
   
   methods: {
-
-    initForm() {
-      this.clearStatus()
-      this.submitting=false;
-      this.addQuestionForm.statement = '';
-      this.addQuestionForm.Answer1 = '';
-      this.addQuestionForm.Answer2 = '';
-      this.addQuestionForm.Answer3 = '';
-      this.addQuestionForm.Answer4 = '';
-      this.addQuestionForm.Answer5 = '';
-
-    },
-
-    addQuestion(payload) {
-      const path = 'http://localhost:5000/add_question';
-      axios.post(path, payload)
-        .then((res) => {
-          console.log(res.data);
-        })
-        .catch((error) => {
-          // eslint-disable-next-line
-          console.log(error);
-        });
-    },
-
-    addQuestions(idS) {    
-      this.payloadQuestion.map((Question) => {
-          const payload = {
-            number: Question.number,
-            statement: Question.statement,
-            answer1: Question.answer1,
-            answer2: Question.answer2,
-            answer3: Question.answer3,
-            answer4: Question.answer4,
-            answer5: Question.answer5,
-            answerType: Question.answerType,
-            idS: idS,
+    getSurveys() {
+      const path = 'http://localhost:5000';
+      const payload = {
+            idS: this.idS
         };
-                this.addQuestion(payload);
-                swal("Survey Created!", "Thank you");
-                router.push({ path: '/ListSuveys'})
-            });
-      
-    },
-    addSurvey() {
-      this.addpayload();
-      const payload ={
-            title: this.titleSurvey,
-            category: this.category,
-            nbOfQuestions: this.numberOfQuestion,
-            idU: this.$store.state.user.idU,
-      };
-      const path = 'http://localhost:5000/add_survey';
       axios.post(path, payload)
         .then((res) => {
-          this.addQuestions(res.data.idS);
+            console.log(res);
+          let surveys = res.data.surveys;
+          this.survey=surveys[0];
         })
         .catch((error) => {
           // eslint-disable-next-line
-          console.log(error);
+          console.error(error.response);
         });
     },
-
-    addpayload(){
-        const payload = {
-            number: this.numberOfQuestion,
-            title: this.addQuestionForm.title,
+    addQuestions() {    
+          const payload = {
+            status: 'edit',
+            number: this.survey.nbOfQuestions+1,
             statement: this.addQuestionForm.statement,
             answer1: this.addQuestionForm.Answer1,
             answer2: this.addQuestionForm.Answer2,
             answer3: this.addQuestionForm.Answer3,
             answer4: this.addQuestionForm.Answer4,
             answer5: this.addQuestionForm.Answer5,
+            answerType: this.addQuestionForm.answerType,
+            idS: this.survey.idS,
         };
-      this.payloadQuestion.push(payload);
+    const path = 'http://localhost:5000/add_question';
+      axios.post(path, payload)
+        .then((res) => {
+          console.log(res.data);
+           swal("Added question!", "You add a new question to your survey");
+                 router.push({ name: 'EditSurvey', params : {
+                        idS: this.idS,
+                    }
+                 })
+        })
+        .catch((error) => {
+          // eslint-disable-next-line
+          console.log(error);
+        });
+               
+      
     },
 
     onSubmit(event) {
@@ -256,10 +216,7 @@ export default {
           this.error=true
 				return 
 			}
-        this.addpayload();
-        
-      this.numberOfQuestion=this.numberOfQuestion+1;
-      this.initForm();
+       this.addQuestions();
     },
 
     clearStatus() {
@@ -269,8 +226,8 @@ export default {
     
   },
   created() {
-    this.titleSurvey=this.$route.params.title;
-    this.category=this.$route.params.category;
+    this.idS=this.$route.params.idS;
+    this.getSurveys();
   },
   
 }

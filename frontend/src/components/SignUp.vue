@@ -15,7 +15,7 @@
             v-model="addUser.Username"
             type="text"
             placeholder="Enter your username"
-            :class="{ 'has-error': submitting && invalidTitle }"
+            :class="{ 'has-error': submitting && invalidUserName }"
             @focus="clearStatus"
             
         >
@@ -29,7 +29,7 @@
             v-model="addUser.FirstName"
             type="text"
             placeholder="Enter your first name"
-            :class="{ 'has-error': submitting && invalidTitle }"
+            :class="{ 'has-error': submitting && invalidFirstName }"
             @focus="clearStatus"
             
         >
@@ -43,7 +43,7 @@
             v-model="addUser.LastName"
             type="text"
             placeholder="Enter your last name"
-            :class="{ 'has-error': submitting && invalidTitle }"
+            :class="{ 'has-error': submitting && invalidLastName }"
             @focus="clearStatus"
             
         >
@@ -56,7 +56,7 @@
             name="Birthdate"
             v-model="addUser.Birthdate"
             type="date"
-            :class="{ 'has-error': submitting && invalidTitle }"
+            :class="{ 'has-error': submitting && invalidBirthdate }"
             @focus="clearStatus"
             
         >
@@ -87,7 +87,7 @@
             v-model="addUser.Phone"
             type="text"
             placeholder="Enter your phone"
-            :class="{ 'has-error': submitting && invalidTitle }"
+            :class="{ 'has-error': submitting && invalidPhone }"
             @focus="clearStatus"
             
         >
@@ -101,7 +101,7 @@
             v-model="addUser.Email"
             type="text"
             placeholder="Enter your Email"
-            :class="{ 'has-error': submitting && invalidTitle }"
+            :class="{ 'has-error': submitting && invalidEmail }"
             @focus="clearStatus"
             
         >
@@ -115,7 +115,7 @@
             v-model="addUser.Password"
             type="text"
             placeholder="Enter your Password"
-            :class="{ 'has-error': submitting && invalidTitle }"
+            :class="{ 'has-error': submitting && invalidPassword }"
             @focus="clearStatus"
             
         >
@@ -129,7 +129,7 @@
             v-model="addUser.ConfirmPassword"
             type="text"
             placeholder="Enter your ConfirmPassword"
-            :class="{ 'has-error': submitting && invalidTitle }"
+            :class="{ 'has-error': submitting && invalidConfirmPassword }"
             @focus="clearStatus"
             
         >
@@ -248,6 +248,7 @@ export default {
             email: this.addUser.Email,
             password: this.addUser.Password,
         };
+        alert(payload.password);
         const path = 'http://localhost:5000/add_user';
         axios.post(path, payload)
         .then((res) => {

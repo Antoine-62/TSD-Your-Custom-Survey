@@ -12,6 +12,7 @@ import Login from '../components/Login.vue'
 import myProfile from '../components/myProfile.vue'
 import ListQuestion from '../components/ListQuestion.vue'
 import EditQuestion from '../components/EditQuestion.vue'
+import AddQuestion from '../components/AddQuestion.vue'
 import ListUsers from '../components/ListUsers.vue'
 
 Vue.use(VueRouter)
@@ -77,6 +78,15 @@ Vue.use(VueRouter)
       component: CreateQuestion,
       props: true,
       meta: { 
+        requiresAuth: true
+      }
+  },
+  {
+    path: '/AddQuestion/:idS',
+    name: 'AddQuestion',
+    component: AddQuestion,
+    props: true,
+    meta: { 
         requiresAuth: true
       }
   },

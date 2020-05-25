@@ -244,6 +244,7 @@ export default {
             answer3: this.addQuestionForm.Answer3,
             answer4: this.addQuestionForm.Answer4,
             answer5: this.addQuestionForm.Answer5,
+            answerType: this.addQuestionForm.answerType
         };
       this.payloadQuestion.push(payload);
     },

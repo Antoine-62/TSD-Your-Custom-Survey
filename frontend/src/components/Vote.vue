@@ -9,6 +9,7 @@
      method="post"
     >
     <h3>{{question.statement}}</h3>
+    <div v-if="question.answerType === 'single'">
 
     <p>
         <input type="radio"
@@ -54,6 +55,53 @@
             :value="question.answer5">
         <label for="Answer5">{{question.answer5}}</label>
     </p>
+    </div>
+    <div v-else>
+       <p>
+        <input type="checkbox"
+            v-model="addVoteForm.Answer1"
+            id="Answer1"
+            name="answer"
+            :value="question.answer1">
+        <label for="Answer1">{{question.answer1}}</label>
+    </p>
+
+    <p>
+        <input type="checkbox"
+            v-model="addVoteForm.Answer2"
+            id="Answer2"
+            name="answer"
+            :value="question.answer2">
+        <label for="Answer2">{{question.answer2}}</label>
+    </p>
+
+    <p v-if="question.answer3 !== ''">
+        <input type="checkbox"
+            v-model="addVoteForm.Answer3"
+            id="Answer3"
+            name="answer"
+            :value="question.answer3">
+        <label for="Answer3">{{question.answer3}}</label>
+    </p>
+
+    <p v-if="question.answer4 !== ''">
+        <input type="checkbox"
+            v-model="addVoteForm.Answer4"
+            id="Answer4"
+            name="answer"
+            :value="question.answer4">
+        <label for="Answer4">{{question.answer4}}</label>
+    </p>
+
+    <p v-if="question.answer5 !== ''">
+        <input type="checkbox"
+            v-model="addVoteForm.Answer5"
+            id="Answer5"
+            name="answer"
+            :value="question.answer5">
+        <label for="Answer5">{{question.answer5}}</label>
+    </p>
+    </div>
 
     <p>
         <input
@@ -139,17 +187,65 @@ export default {
         event.preventDefault();
         this.submitting = true
         this.clearStatus()
-        if (this.invalidAnswer) {
+      /*  if (this.invalidAnswer) {
           this.error=true
 				return 
-			}
-        
-        const payload = {
-            answer: this.addVoteForm.Answer,
-            idQ: this.question.idQ,
-            idU: this.$store.state.user.idU,
-        };
-        this.addVote(payload);
+			}*/
+        if(this.question.answerType === "single") {
+          const payload = {
+              answer: this.addVoteForm.Answer,
+              idQ: this.question.idQ,
+              idU: this.$store.state.user.idU,
+          };
+          this.addVote(payload);
+        }
+        else{
+          if(this.addVoteForm.Answer1)
+          {
+            const payload = {
+                answer: this.question.answer1,
+                idQ: this.question.idQ,
+                idU: this.$store.state.user.idU,
+            };
+            this.addVote(payload);
+          }
+          if(this.addVoteForm.Answer2)
+          {
+            const payload = {
+                answer: this.question.answer2,
+                idQ: this.question.idQ,
+                idU: this.$store.state.user.idU,
+            };
+            this.addVote(payload);
+          }
+          if(this.addVoteForm.Answer3)
+          {
+            const payload = {
+                answer: this.question.answer3,
+                idQ: this.question.idQ,
+                idU: this.$store.state.user.idU,
+            };
+            this.addVote(payload);
+          }
+          if(this.addVoteForm.Answer4)
+          {
+            const payload = {
+                answer: this.question.answer4,
+                idQ: this.question.idQ,
+                idU: this.$store.state.user.idU,
+            };
+            this.addVote(payload);
+          }
+          if(this.addVoteForm.Answer5)
+          {
+            const payload = {
+                answer: this.question.answer5,
+                idQ: this.question.idQ,
+                idU: this.$store.state.user.idU,
+            };
+            this.addVote(payload);
+          }
+        }
       this.initForm();
       this.number = this.question.number;
       if(this.number < this.numberOfQuestion)

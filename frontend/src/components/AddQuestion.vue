@@ -15,14 +15,14 @@
             v-model="addQuestionForm.answerType"
             id="answerType1"
             name="answerType"
-            value="Single">
+            value="single">
         <label for="Gender1">Only one answer possible</label>
 
         <input type="radio"
             v-model="addQuestionForm.answerType"
             id="answerType2"
             name="answerType"
-            value="Multiple">
+            value="multiple">
         <label for="Gender2">Multiples answers possible</label>
     </p>
 

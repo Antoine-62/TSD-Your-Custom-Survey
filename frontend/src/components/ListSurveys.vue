@@ -21,7 +21,6 @@
               <th scope="Title">Title</th>
               <th scope="Categorie">Categorie</th>
               <th scope="Number">Number of question</th>
-              <th></th>
             </tr>
           </thead>
           <tbody>
@@ -30,28 +29,47 @@
               <td>{{ survey.category }}</td>
               <td>{{ survey.nbOfQuestions }} </td>
               <td>
-                <button 
-                    type="button"
-                    class="btn btn-danger btn-sm"
-                    @click="onVoteSurvey(survey)"
-                    >
-                    Vote</button>
-                <button 
-                    type="button"
-                    class="btn btn-danger btn-sm"
-                    @click="onResultSurvey(survey)"
-                    >
-                    Result</button>
-                <button 
-                    type="button"
-                    class="btn btn-danger btn-sm"
-                    @click="onDeleteSurvey(survey)"
-                    >
-                    Delete</button>
-              </td>
+                <div v-if="$store.state.user.idU === survey.idU || $store.state.user.right=== 2">
+                  <button 
+                      type="button"
+                      class="btn btn-danger btn-sm"
+                      @click="onVoteSurvey(survey)"
+                      >
+                      Vote</button>
+                
+                  <button 
+                      type="button"
+                      class="btn btn-danger btn-sm"
+                      @click="onResultSurvey(survey)"
+                      >
+                      Result</button>
+                  <button 
+                      type="button"
+                      class="btn btn-danger btn-sm"
+                      @click="onEditSurvey(survey)"
+                      >
+                      Edit</button>
+
+                  <button 
+                      type="button"
+                      class="btn btn-danger btn-sm"
+                      @click="onDeleteSurvey(survey)"
+                      >
+                      Delete</button>
+                </div>
+                <div v-else>
+                  <button 
+                      type="button"
+                      class="btn btn-danger btn-sm"
+                      @click="onVoteSurvey(survey)"
+                      >
+                      Vote</button>
+                </div>
+                </td>
             </tr>
           </tbody>
         </table>
+
 
  </div>
 </template>
@@ -119,8 +137,6 @@ export default {
         });
     },
 
-
-
   removeSurvey(SurveyId) {
     const path = `http://localhost:5000/delete_survey`;
     console.log(SurveyId)
@@ -140,6 +156,14 @@ export default {
 
   onDeleteSurvey(survey) {
         this.removeSurvey(survey.idS);
+    },
+
+
+    onEditSurvey(survey){
+        const idS = survey.idS;
+        router.push({ name: 'EditSurvey', params :{
+          idS: idS
+        } })
     },
 
     onVoteSurvey(survey) {

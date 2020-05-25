@@ -21,6 +21,7 @@ class QuestionSeeder(Seeder):
         "answer3":'',
         "answer4":'',
         "answer5":'',
+		"answerType":'single',
       }
     )
     
@@ -35,6 +36,7 @@ class QuestionSeeder(Seeder):
         "answer3": "Spanish",
         "answer4": "Polish",
         "answer5": "Chinese",
+		"answerType":'single',
       }
     )
 #3 Questions about movie   
@@ -49,6 +51,7 @@ class QuestionSeeder(Seeder):
         "answer3": "Charlie and the chocolate factory",
         "answer4":'',
         "answer5":'',
+		"answerType":'single',
       }
     )
     fakerMovies2 = Faker(
@@ -62,6 +65,7 @@ class QuestionSeeder(Seeder):
         "answer3": "Johnny Depp",
         "answer4":'',
         "answer5":'',
+		"answerType":'single',
       }
     )
     fakerMovies3 = Faker(
@@ -75,6 +79,7 @@ class QuestionSeeder(Seeder):
         "answer3": "Luc Besson",
         "answer4":'',
         "answer5":'',
+		"answerType":'single',
       }
     )
 

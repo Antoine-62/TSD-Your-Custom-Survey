@@ -14,6 +14,7 @@ from models import Question
 from models import Survey
 from models import Vote
 from models import db
+from werkzeug.security import generate_password_hash, check_password_hash
 
 from flask_seeder import FlaskSeeder
 
@@ -67,23 +68,31 @@ def after_request(response):
   response.headers.add('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE,OPTIONS')
   return response
   
-@app.route('/add_user', methods=["GET", "POST"]) # routing is a pretty common concept, a form sends data by post to the function, the function does stuff
+@app.route('/ezfrtgrytruadd_user', methods=["GET", "POST"]) # routing is a pretty common concept, a form sends data by post to the function, the function does stuff
 def add_user(): # and then redirects to another route
-    if request.form:
-        date = datetime.strptime(request.form.get("birthdate"), '%d-%m-%Y') # formating the string into a date, that's why the string need that specific format
+response_object = {'status': 'success'}
+    if request.method == 'POST':
+        post_data = request.get_json()
+        hash = generate_password_hash(post_data.get('password'))#for security, we hash the password
+        #date = datetime.strptime(request.form.get("birthdate"), '%d-%m-%Y') # formating the string into a date, that's why the string need that specific format
         newUser = User(
-                       firstName=request.form.get('firstName'),
-                       lastName=request.form.get('lastName'),
-                       birthdate=date,
-                       gender=request.form.get('gender'),
-                       phone=request.form.get('phone'),
-                       email=request.form.get('email'),
-                       password=request.form.get('password'),
+                       userName=p
+							
+								
+									
+									ost_data.get('userName'),
+                       firstName=post_data.get('firstName'),
+                       lastName=post_data.get('lastName'),
+                       birthdate=post_data.get('birthdate'),
+                       gender=post_data.get('gender'),
+                       phone=post_data.get('phone'),
+                       email=post_data.get('email'),
+                       password=hash,
                        right=1)
         db.session.add(newUser)
         db.session.commit()
-    return redirect("/")
-
+    return jsonify(response_object)
+    
 
 @app.route("/delete_user", methods=["POST"]) # deletes the user by idU, keep in mind that all tables have Cascade Delete, basically all children(lower FKs) are deleted
 def delete_user(): # meaning that, for example,  if you delete a survey that has 2 questions and each question has 3 votes each, everything will be deleted
@@ -114,15 +123,17 @@ def update_user(): # basically it updates the fields with the new values inputed
     return redirect("/")
 
 
-def getUsersAsJson(): # basically it queries the whole User table, creates an array of serilize user objects(see serialize property in "models.User")
+@app.route('/get_user', methods=["GET"])
+def get_user(): # basically it queries the whole User table, creates an array of serilize user objects(see serialize property in "models.User")
+    response_object = {'status': 'success'} 
     users = User.query.all() # and then creates a json array out of it with json.dumps
     asJson = []
     for usr in users:
         asJson.append(usr.serialize)
-    json.dumps(asJson)
-    return asJson
-
-
+        json.dumps(asJson)
+    response_object['users'] = asJson
+    return jsonify(response_object)
+        
 # Survey CRD methods, they work the same way as the other ones with the exception of the data that flows through them
 
 @app.route('/add_survey', methods=["GET", "POST"])
@@ -251,6 +262,19 @@ def getVotesAsJson():
                 asJson.append(v.serialize)
         json.dumps(asJson)
         response_object['votes'] = asJson
+    return jsonify(response_object)
+    
+@app.route("/check_username", methods=["GET","POST"])
+def checkUsername():
+    response_object = {'status': 'success'}
+    if request.method == 'POST':
+        post_data = request.get_json()
+        userName = post_data.get("userName")
+        user = User.query.filter_by(userName = userName)
+        if user == null
+            response_object['unique'] = 'yes'
+        else 
+            response_object['unique'] = 'no'
     return jsonify(response_object)
 
 

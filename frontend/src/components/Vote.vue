@@ -147,7 +147,7 @@ export default {
         const payload = {
             answer: this.addVoteForm.Answer,
             idQ: this.question.idQ,
-            idU: 1,
+            idU: this.$store.state.user.idU,
         };
         this.addVote(payload);
       this.initForm();
@@ -160,7 +160,7 @@ export default {
       else
       {
           swal("Survey completed!", "Thank you :)");
-          router.push({ path: '/'})
+          router.push({ path: '/ListSuveys'})
       }
     },
     clearStatus() {

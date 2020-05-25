@@ -5,15 +5,21 @@ from flask_cors import CORS
 import sys
 from datetime import datetime
 from flask import Flask, jsonify
+from flask import current_app
 from flask import json
 from flask import render_template
 from flask import request
 from flask import redirect
+from flask import session
 from .models import User
 from .models import Question
 from .models import Survey
 from .models import Vote
 from .models import db
+from datetime import datetime, timedelta
+from werkzeug.security import generate_password_hash, check_password_hash
+
+import jwt
 
 from flask_seeder import FlaskSeeder
 
@@ -47,6 +53,7 @@ app.config.from_object(__name__)
 
 app.config['SQLALCHEMY_DATABASE_URI'] = database_file
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+app.secret_key = b'_5#y2L"F4Q8z\n\xec]/'#You can change the secret key if you  want ><
 
 db.init_app(app)
 seeder = FlaskSeeder()
@@ -57,7 +64,7 @@ seeder.init_app(app, db)
 # the only think to be careful for is the DATE format when you input it, it should be dd-mm-yyyy(eg 13-02-1999) otherwise it crashes
 # i will either add it later to the backed or we can check it on the frontend before sending the data
 
-
+#here we define the headers for cors(cross origin ressources sharing (to change data between vuejs and flask)
 @app.after_request
 def after_request(response):
   response.headers.add('Access-Control-Allow-Origin', '*')
@@ -67,25 +74,29 @@ def after_request(response):
   
 @app.route('/add_user', methods=["GET", "POST"]) # routing is a pretty common concept, a form sends data by post to the function, the function does stuff
 def add_user(): # and then redirects to another route
-    if request.form:
-        date = datetime.strptime(request.form.get("birthdate"), '%d-%m-%Y') # formating the string into a date, that's why the string need that specific format
+    response_object = {'status': 'success'}#first we define a object
+    if request.method == 'POST':#if post request
+        post_data = request.get_json()#we retrieve the data which are in json format
+        #date = datetime.strptime(request.form.get("birthdate"), '%d-%m-%Y') # formating the string into a date, that's why the string need that specific format
         newUser = User(
-                       firstName=request.form.get('firstName'),
-                       lastName=request.form.get('lastName'),
-                       birthdate=date,
-                       gender=request.form.get('gender'),
-                       phone=request.form.get('phone'),
-                       email=request.form.get('email'),
-                       password=request.form.get('password'),
+                       userName=post_data.get('userName'),
+                       firstName=post_data.get('firstName'),
+                       lastName=post_data.get('lastName'),
+                       birthdate=post_data.get('birthdate'),
+                       gender=post_data.get('gender'),
+                       phone=post_data.get('phone'),
+                       email=post_data.get('email'),
                        right=1)
+        newUser.set_password(post_data.get('password'))#here we ash the password
         db.session.add(newUser)
         db.session.commit()
-    return redirect("/")
+    return jsonify(response_object)#here we send the object with status success in json format
 
 
 @app.route("/delete_user", methods=["POST"]) # deletes the user by idU, keep in mind that all tables have Cascade Delete, basically all children(lower FKs) are deleted
 def delete_user(): # meaning that, for example,  if you delete a survey that has 2 questions and each question has 3 votes each, everything will be deleted
-    idU = request.form.get("idU") # i found it logical like that but if we need to modify anything it's just a line of code so no worries
+    post_data = request.get_json()
+    idU = post_data.get("idU") # i found it logical like that but if we need to modify anything it's just a line of code so no worries
     user = User.query.filter_by(idU=idU).first()
     db.session.delete(user)
     db.session.commit()
@@ -112,13 +123,16 @@ def update_user(): # basically it updates the fields with the new values inputed
     return redirect("/")
 
 
-def getUsersAsJson(): # basically it queries the whole User table, creates an array of serilize user objects(see serialize property in "models.User")
+@app.route('/get_user', methods=["GET"])
+def get_user(): # basically it queries the whole User table, creates an array of serilize user objects(see serialize property in "models.User")
+    response_object = {'status': 'success'} 
     users = User.query.all() # and then creates a json array out of it with json.dumps
     asJson = []
     for usr in users:
         asJson.append(usr.serialize)
-    json.dumps(asJson)
-    return asJson
+        json.dumps(asJson)
+    response_object['users'] = asJson
+    return jsonify(response_object)
 
 
 # Survey CRD methods, they work the same way as the other ones with the exception of the data that flows through them
@@ -167,30 +181,61 @@ def add_question():
                        answer3=post_data.get('answer3'),
                        answer4=post_data.get('answer4'),
                        answer5=post_data.get('answer5'),
+                       answerType=post_data.get('answerType'),
                        idS=post_data.get('idS'))
         db.session.add(newQuestion)
         db.session.commit()
+    return jsonify(response_object)
+    
+@app.route("/update_question", methods=["POST"]) 
+def update_question(): 
+    response_object = {'status': 'success'}
+    post_data = request.get_json()
+    id = post_data.get('idQ')
+    question = Question.query.filter_by(idQ = id).first() 
+    question.statement = post_data.get('statement')
+    question.answer1 = post_data.get('answer1')
+    question.answer2 = post_data.get('answer2')
+    question.answer3 = post_data.get('answer3')
+    question.answer4 = post_data.get('answer4')
+    question.answer5 = post_data.get('answer5')
+    db.session.commit()
     return jsonify(response_object)
 
 
 @app.route("/delete_question", methods=["POST"])
 def delete_question():
-    idQ = request.form.get("idQ")
+    response_object = {'status': 'success'}
+    post_data = request.get_json()
+    idQ = post_data.get("idQ")
     question = Question.query.filter_by(idQ=idQ).first()
+    idS = question.idS
+    survey = Survey.query.filter_by(idS=idS).first()
+    nbOfQuestions = survey.nbOfQuestions - 1
+    survey.nbOfQuestions = nbOfQuestions
+    questions = Question.query.filter_by(idS=survey.idS)
+    for qus in questions:
+        if qus.number > question.number:
+            qus.number = qus.number - 1
     db.session.delete(question)
     db.session.commit()
-    return redirect("/")
+    return jsonify(response_object)
 
 @app.route("/get_question", methods=["GET", "POST"])
 def getQuestionsAsJson():
     response_object = {'status': 'success'}
     if request.method == 'POST':
         post_data = request.get_json()
-        id = post_data.get("idS")
-        questions = Question.query.filter_by(idS = id).order_by(Question.number.asc())
         asJson = []
-        for qus in questions:
-            asJson.append(qus.serialize)
+        id = post_data.get("idS")
+        if id is not None:
+            questions = Question.query.filter_by(idS = id).order_by(Question.number.asc())
+            for qus in questions:
+                asJson.append(qus.serialize)
+        else:
+            id = post_data.get("idQ")
+            questions = Question.query.filter_by(idQ = id).first()
+            asJson.append(questions.serialize)
         json.dumps(asJson)
         response_object['questions'] = asJson
     else:
@@ -242,16 +287,53 @@ def getVotesAsJson():
         json.dumps(asJson)
         response_object['votes'] = asJson
     return jsonify(response_object)
+    
+
+#login  
+@app.route("/login", methods=["GET","POST"])
+def login():
+    response_object = {'status': 'success'}
+    if request.method == 'POST':
+        post_data = request.get_json()
+        username = post_data.get("userName")
+        userN = db.session.query(User.userName).filter_by(userName = username).first()
+        asJson = []
+        if userN is not None :
+            user = User.query.filter_by(userName = username).first()
+            if user.check_password(post_data.get("password")):
+                session['username'] = userN;
+                token = jwt.encode({
+                    'sub': userN,
+                    'iat':datetime.utcnow(),
+                    'exp': datetime.utcnow() + timedelta(minutes=30)},
+                    current_app.config['SECRET_KEY'])
+                asJson.append(user.serialize)
+                json.dumps(asJson)
+                response_object['user'] = asJson
+                response_object['token'] = token.decode('UTF-8')
+            else :
+                response_object['NoFound'] = "The password is wrong"
+        else :
+            response_object['NoFound'] = "The username is wrong"
+    return jsonify(response_object)
 
 
-# the main route aka index of the app, it prints the home.html template tha ti used for debugging, it contains forms for all 4 tables
-# and button for add, delete and update(just for user), they are ugly but pretty straightforward
+# the main route aka index of the app, here it will manage the data about survey tables 
 
 @app.route('/', methods=["GET", "POST"])
 def getSurveysAsJson():
     response_object = {'status': 'success'}
-    surveys = Survey.query.all()
     asJson = []
+    if request.method == 'POST':
+        post_data = request.get_json()
+        id = post_data.get("idU")
+        if id is not None:
+            surveys = Survey.query.filter_by(idU = id)
+        else:
+            id = post_data.get("idS")
+            surveys = Survey.query.filter_by(idS = id)
+    else :
+        surveys = Survey.query.all()
     for sur in surveys:
         asJson.append(sur.serialize)
     json.dumps(asJson)

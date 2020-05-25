@@ -14,12 +14,12 @@
             </b-collapse>
                  <b-collapse id="nav-collapse 2" is-nav>
                  <b-navbar-nav class ="ml-auto" v-if="isLoggedIn"> 
-                      <router-link to="/ListUsers" v-if="$store.state.user.right === 2">List Users</router-link>
-                      <router-link to="/myProfile">My Profile</router-link>
-                      <a @click="logout">Logout</a>
+                      <router-link to="/ListUsers" v-if="$store.state.user.right === 2">List Users</router-link><span>|</span>
+                      <router-link to="/myProfile">My Profile</router-link><span>|</span>
+                      <a id="logout" @click="logout">Logout</a>
                   </b-navbar-nav>
                   <b-navbar-nav class ="ml-auto" v-else>                          
-                        <router-link to="/SignIN">Sign in</router-link>
+                        <router-link to="/SignIN">Sign in</router-link><span>|</span>
                         <router-link to="/SignUp">Sign up</router-link>
                   </b-navbar-nav>
             </b-collapse>
@@ -27,7 +27,9 @@
     </div>  
 </template>
 <script>
+import swal from 'sweetalert';
 export default {
+
   computed : {
       isLoggedIn : function(){ return this.$store.getters.isLoggedIn}
     },
@@ -35,6 +37,7 @@ export default {
       logout: function () {
         this.$store.dispatch('logout')
         .then(() => {
+          swal("You have been disconnected!");
           this.$router.push('/SignIn')
         })
       }
@@ -43,10 +46,14 @@ export default {
 </script>
 
 <style lang="scss">
-
+b-navbar{
+  span{
+     color: #007bff;
+  }
+}
   a {
     font-weight: bold;
-    color: #2c3e50;
+    color: #007bff;
 
 
     &.router-link-exact-active {
@@ -56,6 +63,11 @@ export default {
 
   #router{
       text-align: center;
+  }
+
+  #logout{
+    color: #007bff;
+    cursor: pointer;
   }
 
 </style>

@@ -8,6 +8,12 @@
     <p> Gender : {{ $store.state.user.gender }}</p>
     <p> Phone : {{ $store.state.user.phone }}</p>
     <p> Email : {{ $store.state.user.email }}</p>
+    <button 
+                    type="button"
+                    class="btn btn-danger btn-sm"
+                    @click="onEditUser(user)"
+                    >
+                    Edit my profile</button>
 
     <h1>My Surveys</h1>
     <table id="listSurvey">
@@ -123,6 +129,13 @@ export default {
           category: category
       } })
     },
+
+    onEditUser(){
+      const idU = this.$store.state.user.idU;
+        this.$router.push({ name: 'EditMyProfile', params :{
+          idU: idU
+        } })
+    }
   
  },
 created() {

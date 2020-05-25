@@ -14,6 +14,7 @@ import ListQuestion from '../components/ListQuestion.vue'
 import EditQuestion from '../components/EditQuestion.vue'
 import AddQuestion from '../components/AddQuestion.vue'
 import ListUsers from '../components/ListUsers.vue'
+import EditMyProfile from '../components/EditMyProfile.vue'
 
 Vue.use(VueRouter)
 
@@ -106,6 +107,15 @@ Vue.use(VueRouter)
     meta: { 
       requiresAuth: true
     }
+},
+{
+  path: '/EditMyProfile/:idU',
+  name: 'EditMyProfile',
+  component: EditMyProfile,
+  props: true,
+  meta: { 
+    requiresAuth: true
+  }
 },
   {
       path: '/Vote/:category/:title/:numberOfQuestion/:idS',

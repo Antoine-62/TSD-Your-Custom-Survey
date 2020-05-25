@@ -158,7 +158,7 @@
 //import axios from 'axios';
 import axios from 'axios';
 import router from '../router'
-
+import swal from 'sweetalert';
 export default {
   name: 'SignUp',
   data() {
@@ -248,11 +248,11 @@ export default {
             email: this.addUser.Email,
             password: this.addUser.Password,
         };
-        alert(payload.password);
         const path = 'http://localhost:5000/add_user';
         axios.post(path, payload)
         .then((res) => {
           console.log(res.data);
+           swal("You have been registered!");
           router.push('SignIn');
         })
         .catch((error) => {

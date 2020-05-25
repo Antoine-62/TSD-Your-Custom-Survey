@@ -12,7 +12,6 @@
               <th scope="Gender">Gender</th>
               <th scope="Phone">Phone</th>
               <th scope="Email">Email</th>
-              <th scope="Password">Password</th>
             </tr>
           </thead>
           <tbody>
@@ -24,7 +23,6 @@
               <td>{{ user.gender }}</td>
               <td>{{ user.phone }} </td>
               <td>{{ user.email }}</td>
-              <td>{{ user.password }}</td>
               <td>
                 <button 
                     type="button"

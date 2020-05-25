@@ -100,6 +100,7 @@
 <script>
 import axios from 'axios';
 import router from '../router';
+import swal from 'sweetalert';
 
 export default {
   name: 'EditQuestion',
@@ -184,11 +185,10 @@ export default {
             answer4: this.question.answer4,
             answer5: this.question.answer5,
       };
-      alert(payload.answer2)
       const path = 'http://localhost:5000/update_question';
       axios.post(path, payload)
-        .then((res) => {
-            alert(res.data.status);
+        .then(() => {
+            swal("Congratulations!, You edited a question.");
             const idS = this.survey.idS;
             router.push({ name: 'EditSurvey', params :{
                 idS: idS

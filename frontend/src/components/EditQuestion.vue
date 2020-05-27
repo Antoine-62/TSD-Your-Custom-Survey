@@ -2,6 +2,7 @@
  <div id="container">
     <h1>Survey : {{survey.title}}</h1>
     <h1>Question n°{{question.number}}</h1>
+    <h1>Type of answer : {{question.answerType}}</h1>
     <form
      id="app"
      @submit="onSubmit"
@@ -121,6 +122,7 @@ export default {
         answer3: '',
         answer4: '',
         answer5: '',
+        answerType: '',
       }
     };
   },   

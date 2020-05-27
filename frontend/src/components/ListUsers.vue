@@ -40,6 +40,7 @@
 
 <script>
 import axios from 'axios';
+import swal from 'sweetalert';
 
 export default {
   name: 'ListUsers',
@@ -64,18 +65,35 @@ export default {
     },
 
     onDeleteUser(user){
-        const path = `http://localhost:5000/delete_user`;
-        const payload = {
-            idU: user.idU
-        };
-        axios.post(path, payload)
-      .then(() => {
-          this.getUsers();
-      
-      })
-      .catch((error) => {
-          console.error(error);
-    });
+      swal({
+          title: 'Are you sure to have to delete this user?',
+          text: "You won't be able to revert this!",
+          icon: 'warning',
+          buttons: true,
+          dangerMode: true,
+        }).then((willDelete) => {
+          if (willDelete) {
+              const path = `http://localhost:5000/delete_user`;
+              const payload = {
+                  idU: user.idU
+              };
+              axios.post(path, payload)
+              .then(() => {
+                  this.getUsers();
+                   swal(
+                  'Deleted!',
+                  'The user has been deleted.',
+                  'success'
+                )
+              })
+              .catch((error) => {
+                  console.error(error);
+            });
+
+           
+          }
+        })
+        
     },
 
   

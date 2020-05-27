@@ -1,7 +1,7 @@
 <template>
  <div id="container">
     <h1>You edit your profile</h1>
-    <h1>Question n°{{user.userName}}</h1>
+    <h1>User {{user.userName}}</h1>
     <form
      id="app"
      @submit="onSubmit"
@@ -30,18 +30,6 @@
             :class="{ 'has-error': submitting && invalidAnswer1 }"
             @focus="clearStatus"
             
-        >
-    </p>
-
-    <p>
-        <label for="birthdate">Birthdate</label>
-        <input
-            id="birthdate"
-            name="birthdate"
-            v-model="user.birthdate"
-            type="date"
-            :class="{ 'has-error': submitting && invalidAnswer2 }"
-            @focus="clearStatus"
         >
     </p>
 
@@ -99,7 +87,7 @@
 
 <script>
 import axios from 'axios';
-import router from '../router';
+import swal from 'sweetalert';
 
 export default {
   name: 'EditMyProfile',
@@ -121,17 +109,6 @@ export default {
       }
     };
   },   
-  computed: {
-		invalidStatement() {
-			return this.question.statement === ''
-    },
-    invalidAnswer1() {
-			return this.question.answer1 === ''
-    },
-    invalidAnswer2() {
-			return this.question.answer2 === ''
-		},
-  },
   methods: {
     getSurveys() {
       const path = 'http://localhost:5000';
@@ -149,53 +126,19 @@ export default {
         });
     },
     getUser() {
-      const path = 'http://localhost:5000/get_question';
-      const payload = {
-            idQ: this.idQ
-        };
-      axios.post(path, payload)
-        .then((res) => {
-            console.log(res);
-            let questions = res.data.questions;
-          this.question = questions[0];
-          this.getSurveys();
-        })
-        .catch((error) => {
-          // eslint-disable-next-line
-          console.error(error.response);
-        });
+      this.user.idU=this.$store.state.user.idU;
+      this.user.userName=this.$store.state.user.userName;
+      this.user.firstName=this.$store.state.user.firstName;
+      this.user.lastName=this.$store.state.user.lastName;
+      this.user.birthdate=this.$store.state.user.birthdate;
+      this.user.gender=this.$store.state.user.gender;
+      this.user.phone=this.$store.state.user.phone;
+      this.user.email=this.$store.state.user.email;
+
     },
     onSubmit() {
       event.preventDefault();
-      this.submitting = true
-      this.clearStatus()
-      if (this.invalidStatement||this.invalidAnswer1||this.invalidAnswer2) {
-          this.error=true
-				return 
-		}
-      const payload ={
-            idQ: this.question.idQ,
-            statement: this.question.statement,
-            answer1: this.question.answer1,
-            answer2: this.question.answer2,
-            answer3: this.question.answer3,
-            answer4: this.question.answer4,
-            answer5: this.question.answer5,
-      };
-      alert(payload.answer2)
-      const path = 'http://localhost:5000/update_question';
-      axios.post(path, payload)
-        .then((res) => {
-            alert(res.data.status);
-            const idS = this.survey.idS;
-            router.push({ name: 'EditSurvey', params :{
-                idS: idS
-            } })
-        })
-        .catch((error) => {
-          // eslint-disable-next-line
-          console.log(error);
-        });
+     swal("Sorry!, This function is not finish yet.");
     },
 
     clearStatus() {

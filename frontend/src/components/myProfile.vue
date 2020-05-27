@@ -16,6 +16,7 @@
                     Edit my profile</button>
 
     <h1>My Surveys</h1>
+    <div v-if="surveys[0]">
     <table id="listSurvey">
           <thead>
             <tr>
@@ -54,6 +55,10 @@
             </tr>
           </tbody>
         </table>
+    </div>
+    <div v-else>
+      <h3>You didn't create any survey yet</h3>
+    </div>
  </div>
 </template>
 

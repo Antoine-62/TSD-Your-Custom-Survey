@@ -22,7 +22,10 @@ Vue.use(VueRouter)
   {
       path: '/',
       name: 'index',
-      component: HelloWorld
+      component: HelloWorld,
+      meta: { 
+        guest: true
+      }
   },
   {
       path: '/SignUp',

@@ -5,7 +5,7 @@
     
     <div v-for="(question, index) in questions" :key="index">
         <h2>Question n°{{ question.number }}</h2>
-        <h2>Number of participants : {{ TotalAnswer(question.idQ) }}</h2>
+        <h2>Number of votes : {{ TotalAnswer(question.idQ) }}</h2>
         <h2>{{ question.statement }}</h2>
         <ul>
             <li>{{question.answer1}} : {{countAnswer(question.idQ,question.answer1)}}%</li>

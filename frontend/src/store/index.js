@@ -1,6 +1,8 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
 import axios from 'axios'
+import swal from 'sweetalert';
+import createPersistedState from "vuex-persistedstate";
 
 Vue.use(Vuex)
 
@@ -10,6 +12,9 @@ export default new Vuex.Store({
     token: localStorage.getItem('token') || '',
     user: {}
   },
+
+  plugins: [createPersistedState()],
+
   mutations: {
     auth_request(state){
       state.status = 'loading'
@@ -25,6 +30,7 @@ export default new Vuex.Store({
     logout(state){
       state.status = ''
       state.token = ''
+      state.user = {}
     },
   },
   actions: {
@@ -36,7 +42,7 @@ export default new Vuex.Store({
         .then(res => {
           const token = res.data.token
           if(res.data.NoFound){
-            alert(res.data.NoFound);
+            swal(res.data.NoFound);
             commit('auth_error');
             localStorage.removeItem('token')
         }
@@ -61,8 +67,6 @@ export default new Vuex.Store({
     return new Promise((resolve) => {
       commit('logout')
       localStorage.removeItem('token')
-      localStorage.removeItem('jwt')
-      alert('remove token')
       delete axios.defaults.headers.common['Authorization']
       resolve()
     })

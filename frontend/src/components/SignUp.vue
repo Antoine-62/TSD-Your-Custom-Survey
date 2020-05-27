@@ -238,6 +238,11 @@ export default {
 				this.error = true
 				return
         }
+        if(this.ConfirmPass() === false)
+        {
+          swal("Error", "You didn't enter 2 times the same password");
+          return
+        }
         const payload = {
             userName: this.addUser.Username,
             firstName: this.addUser.FirstName,

@@ -51,6 +51,11 @@
                       @click="onDeleteSurvey(survey)"
                       >
                       Delete</button>
+                  <button
+                      type="button"
+                      class="btn btn-danger btn-sm"
+                      @click="onDownloadSurvey(survey)">
+                      Download</button>
                 </td>
             </tr>
           </tbody>
@@ -140,6 +145,26 @@ export default {
         this.$router.push({ name: 'EditMyProfile', params :{
           idU: idU
         } })
+    },
+
+    downloadSurvey(SurveyId){
+        const path = `http://localhost:5000/download_survey`;
+        const payload = {
+            idS: SurveyId
+        };
+        axios.post(path, payload)
+        .then(() => {
+        this.getSurveys();
+
+        })
+        .catch((error) => {
+          // eslint-disable-next-line
+            console.error(error);
+        });
+    },
+
+    onDownloadSurvey(survey){
+        this.downloadSurvey(survey.idS)
     }
   
  },

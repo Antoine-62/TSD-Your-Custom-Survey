@@ -11,12 +11,14 @@ from flask import render_template
 from flask import request
 from flask import redirect
 from flask import session
+from flask import send_file
 from .models import User
 from .models import Question
 from .models import Survey
 from .models import Vote
 from .models import db
 from datetime import datetime, timedelta
+import flask_excel as excel
 from werkzeug.security import generate_password_hash, check_password_hash
 
 import jwt
@@ -50,6 +52,7 @@ database_file = "sqlite:///{}".format(os.path.join(project_dir, "YCS.db"))
 app = Flask(__name__)
 CORS(app, resources={r"/api/*": {"origins": "*"}})
 app.config.from_object(__name__)
+excel.init_excel(app)
 
 app.config['SQLALCHEMY_DATABASE_URI'] = database_file
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
@@ -67,10 +70,10 @@ seeder.init_app(app, db)
 #here we define the headers for cors(cross origin ressources sharing (to change data between vuejs and flask)
 @app.after_request
 def after_request(response):
-  response.headers.add('Access-Control-Allow-Origin', '*')
-  response.headers.add('Access-Control-Allow-Headers', 'Content-Type,Authorization')
-  response.headers.add('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE,OPTIONS')
-  return response
+    response.headers.add('Access-Control-Allow-Origin', '*')
+    response.headers.add('Access-Control-Allow-Headers', 'Content-Type,Authorization')
+    response.headers.add('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE,OPTIONS')
+    return response
   
 @app.route('/add_user', methods=["GET", "POST"]) # routing is a pretty common concept, a form sends data by post to the function, the function does stuff
 def add_user(): # and then redirects to another route
@@ -241,7 +244,7 @@ def getQuestionsAsJson():
         else:
             id = post_data.get("idQ")
             questions = Question.query.filter_by(idQ = id).first()
-            asJson.append(questions.serialize)
+            asJson. append(questions.serialize)
         json.dumps(asJson)
         response_object['questions'] = asJson
     else:
@@ -345,6 +348,19 @@ def getSurveysAsJson():
     json.dumps(asJson)
     response_object['surveys'] = asJson
     return jsonify(response_object)#to send the json data - without this function, we cannot send json
+
+@app.route('/download_survey', methods=["POST", "HEAD"])
+def download_survey():
+    post_data = request.get_json()
+    idS = post_data.get("idS")
+    survey = Survey.query.filter_by(idS=idS).first()
+    surveyAsJson = survey.serialize
+    print(surveyAsJson)
+    return excel.make_response_from_dict(surveyAsJson, "xls", file_name="answers")
+
+# @app.route('/download_survey/<answers>', methods=["GET"])
+# def get_answers(answers):
+#     return send_file("answers.xls", as_attachment=True)
 
 if __name__ == '__main__':
     app.run(debug=True)

@@ -349,18 +349,27 @@ def getSurveysAsJson():
     response_object['surveys'] = asJson
     return jsonify(response_object)#to send the json data - without this function, we cannot send json
 
-@app.route('/download_survey', methods=["POST", "HEAD"])
+@app.route('/download_survey', methods=["POST"])
 def download_survey():
     post_data = request.get_json()
+    asJson = []
     idS = post_data.get("idS")
-    survey = Survey.query.filter_by(idS=idS).first()
-    surveyAsJson = survey.serialize
-    print(surveyAsJson)
-    return excel.make_response_from_dict(surveyAsJson, "xls", file_name="answers")
+    print(idS)
+    surveys = Survey.query.filter_by(idS = idS).all()
+    #surveyAsJson = survey.serialize
+    column_names = ['idS', 'title', 'category', 'nbOfQuestions', 'idU']
+    #output.headers["Content-type"] = "text/csv"
+    #output = excel.make_response_from_tables(db.session, [Survey], "handsontable.html")
+    output = excel.make_response_from_query_sets(surveys, column_names, "xls")
+    #output.headers["Content-type"] = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+    output.headers["Content-type"] = "application/vnd.ms-excel"
+    #print(surveyAsJson)
+    return output
 
 # @app.route('/download_survey/<answers>', methods=["GET"])
 # def get_answers(answers):
 #     return send_file("answers.xls", as_attachment=True)
 
 if __name__ == '__main__':
+    excel.init_excel(app)
     app.run(debug=True)

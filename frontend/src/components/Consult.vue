@@ -3,9 +3,11 @@
     <h1>Title : {{this.titleSurvey}}</h1>
     <h1>Category : {{this.category}}</h1>
     
+    
+    <apexchart type="bar" height="430" :options="chartOptions" :series="series"></apexchart>
     <div v-for="(question, index) in questions" :key="index">
         <h2>Question n°{{ question.number }}</h2>
-        <h2>Number of votes : {{ TotalAnswer(question.idQ) }}</h2>
+        <h2>Number of votes : {{ TotalAnswer(question.idQ, question.number) }}</h2>
         <h2>{{ question.statement }}</h2>
         <ul>
             <li>{{question.answer1}} : {{countAnswer(question.idQ,question.answer1)}}%</li>
@@ -16,15 +18,18 @@
         </ul>
               
     </div>
-
  </div>
 </template>
 
 <script>
 import axios from 'axios';
+import VueApexCharts from 'vue-apexcharts';
 
 export default {
   name: 'Consult',
+  components: {
+          apexchart: VueApexCharts,
+        },
   data() {
     return {
         idS: '',
@@ -32,6 +37,59 @@ export default {
         category: '',
         questions: [],
         votes: [],
+        countA1Array : [],
+        countA2Array : [],
+        countA3Array : [],
+        countA4Array : [],
+        countA5Array : [],
+        QuestionArray : [],
+        series: [{
+            name: 'Answer 1',
+            data: [44, 55]
+          }, {
+            name: 'Answer 2',
+            data: [53, 32]
+          }, {
+            name: 'Answer 3',
+            data: [53, 32]
+          }, {
+            name: 'Answer 4',
+            data: [53, 32]
+          }, {
+            name: 'Answer 5',
+            data: [53, 32]
+          }],
+          
+          chartOptions: {
+            chart: {
+              type: 'bar',
+              height: 430
+            },
+            plotOptions: {
+              bar: {
+                horizontal: true,
+                dataLabels: {
+                  position: 'top',
+                },
+              }
+            },
+            dataLabels: {
+              enabled: true,
+              offsetX: -6,
+              style: {
+                fontSize: '12px',
+                colors: ['#fff']
+              }
+            },
+            stroke: {
+              show: true,
+              width: 0.5,
+              colors: ['#fff']
+            },
+            xaxis: {
+              categories: ["test"],
+            },
+          },
     };
   },
   methods: {
@@ -58,9 +116,70 @@ export default {
         return countPerCent;
     },
 
+    countAnswer2()
+    {
+        this.questions.map(question=>{
+            let CountA1=0;
+            let CountA2=0;
+            let CountA3=0;
+            let CountA4=0;
+            let CountA5=0;
+            this.votes.map(vote=>{
+              if(vote.idQ === question.idQ){
+                if(vote.answer === question.answer1)
+                {
+                    CountA1++;
+                }
+                if(vote.answer === question.answer2)
+                {
+                    CountA2++;
+                }
+                if(vote.answer === question.answer3)
+                {
+                    CountA3++;
+                }
+                if(vote.answer === question.answer4)
+                {
+                    CountA4++;
+                }
+                if(vote.answer === question.answer5)
+                {
+                    CountA5++;
+                }
+              }
+            })
+            this.countA1Array.push(CountA1);
+            this.countA2Array.push(CountA2);
+            this.countA3Array.push(CountA3);
+            this.countA4Array.push(CountA4);
+            this.countA5Array.push(CountA5);
+            var Ques = "Question "+question.number;
+            this.QuestionArray.push(Ques);
+
+        })
+        this.chartOptions = {...this.chartOptions, ...{xaxis: {categories:this.QuestionArray}}}
+        this.series = [{
+            name: 'Answer 1',
+            data: this.countA1Array
+          }, {
+            name: 'Answer 2',
+            data: this.countA2Array
+          }, {
+            name: 'Answer 3',
+            data: this.countA3Array
+          }, {
+            name: 'Answer 4',
+            data: this.countA4Array
+          }, {
+            name: 'Answer 5',
+            data: this.countA5Array
+          }]
+    },
+
     TotalAnswer(idQ)
     {
         var counterTotal=0;
+        
         this.votes.map(vote=>{
           if(vote.idQ === idQ){
             counterTotal++;
@@ -100,6 +219,7 @@ export default {
         .then((res) => {
             console.log(res.data.votes);
           this.votes = res.data.votes;
+          this.getQuestions(this.idS);
         })
         .catch((error) => {
           // eslint-disable-next-line
@@ -115,6 +235,7 @@ export default {
         .then((res) => {
             console.log(res);
           this.questions = res.data.questions;
+          this.countAnswer2();
         })
         .catch((error) => {
           // eslint-disable-next-line
@@ -128,7 +249,6 @@ created() {
     this.titleSurvey=this.$route.params.title;
     this.category=this.$route.params.category;
     this.getVotes(this.idS);
-    this.getQuestions(this.idS);
   },
   
 }

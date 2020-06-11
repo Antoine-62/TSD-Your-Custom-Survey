@@ -54,7 +54,8 @@
                   <button
                       type="button"
                       class="btn btn-danger btn-sm"
-                      @click="onDownloadSurvey(survey)">
+                      @click="onDownloadSurvey(survey)"
+                      >
                       Download</button>
                 </td>
             </tr>
@@ -69,6 +70,7 @@
 
 <script>
 import axios from 'axios';
+import FileSaver from 'file-saver'
 //import router from '../router';
 
 export default {
@@ -152,10 +154,10 @@ export default {
         const payload = {
             idS: SurveyId
         };
-        axios.post(path, payload)
-        .then(() => {
-        this.getSurveys();
-
+        axios.post(path, payload,{responseType: 'blob'})
+        .then((response) => {
+            FileSaver.saveAs(response.data, "YourSurvey.xls");
+            
         })
         .catch((error) => {
           // eslint-disable-next-line

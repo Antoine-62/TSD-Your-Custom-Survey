@@ -12,11 +12,11 @@ from flask import request
 from flask import redirect
 from flask import session
 from flask import send_file
-from .models import User
-from .models import Question
-from .models import Survey
-from .models import Vote
-from .models import db
+from models import User
+from models import Question
+from models import Survey
+from models import Vote
+from models import db
 from datetime import datetime, timedelta
 import flask_excel as excel
 from werkzeug.security import generate_password_hash, check_password_hash
@@ -90,9 +90,14 @@ def add_user(): # and then redirects to another route
                        phone=post_data.get('phone'),
                        email=post_data.get('email'),
                        right=1)
+        response_object['username'] = newUser.userName
         newUser.set_password(post_data.get('password'))#here we ash the password
         db.session.add(newUser)
-        db.session.commit()
+        try:
+            db.session.commit()
+            response_object['commitCheck'] = 'Success'
+        except:
+            print('Error')
     return jsonify(response_object)#here we send the object with status success in json format
 
 
@@ -151,7 +156,11 @@ def add_survey():
                        nbOfQuestions=int(post_data.get('nbOfQuestions')),
                        idU=int(post_data.get('idU')))
         db.session.add(newSurvey)
-        db.session.commit()
+        try:
+            db.session.commit()
+            response_object["checkCommit"] = "Success"
+        except:
+            response_object["checkCommit"] = "Fail"
         Surv = db.session.query(func.max(Survey.idS).label("idS")).first()
         idS2 = Surv.idS
     response_object['message'] = 'Survey added!'
@@ -193,7 +202,11 @@ def add_question():
             survey = Survey.query.filter_by(idS=idS).first()
             nbOfQuestions = survey.nbOfQuestions + 1
             survey.nbOfQuestions = nbOfQuestions
-        db.session.commit()
+        try:
+            db.session.commit()
+            response_object["checkCommit"] = "Success"
+        except:
+            response_object["checkCommit"] = "Fail"
     return jsonify(response_object)
     
 @app.route("/update_question", methods=["POST"]) 
@@ -269,7 +282,11 @@ def add_vote():
                        idU=post_data.get('idU'),
                        idQ=post_data.get('idQ'))
         db.session.add(newVote)
-        db.session.commit()
+        try:
+            db.session.commit()
+            response_object["checkCommit"] = "Success"
+        except:
+            response_object["checkCommit"] = "Fail"
     return jsonify(response_object)
 
 @app.route("/delete_vote", methods=["POST"])
@@ -299,9 +316,10 @@ def getVotesAsJson():
     
 
 #login  
-@app.route("/login", methods=["GET","POST"])
+@app.route("/login", methods=["GET", "POST"])
 def login():
     response_object = {'status': 'success'}
+    response_object["NoFound"] = None
     if request.method == 'POST':
         post_data = request.get_json()
         username = post_data.get("userName")
@@ -310,7 +328,7 @@ def login():
         if userN is not None :
             user = User.query.filter_by(userName = username).first()
             if user.check_password(post_data.get("password")):
-                session['username'] = userN;
+                session['username'] = userN
                 token = jwt.encode({
                     'sub': userN,
                     'iat':datetime.utcnow(),

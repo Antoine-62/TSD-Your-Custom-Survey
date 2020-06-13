@@ -90,9 +90,14 @@ def add_user(): # and then redirects to another route
                        phone=post_data.get('phone'),
                        email=post_data.get('email'),
                        right=1)
+        response_object['username'] = newUser.userName
         newUser.set_password(post_data.get('password'))#here we ash the password
         db.session.add(newUser)
-        db.session.commit()
+        try:
+            db.session.commit()
+            response_object['commitCheck'] = 'Success'
+        except:
+            print('Error')
     return jsonify(response_object)#here we send the object with status success in json format
 
 
@@ -108,23 +113,18 @@ def delete_user(): # meaning that, for example,  if you delete a survey that has
 
 @app.route("/update_user", methods=["POST"]) # User is the only one that ahs Update so far(because of laziness reasons to be honest)
 def update_user(): # basically it updates the fields with the new values inputed there while the old values are there as placeholders
-    newdate = datetime.strptime(request.form.get("newbDate"), '%Y-%m-%d') # such that if you don't want to modify, let's say, the date, then the old date will
-    id = request.form.get('idU') # still be there unchanged(there is lots of room for improvement but i needed to see that i works)
+    response_object = {'status': 'success'}
+    post_data = request.get_json()
+    id = post_data.get('idU') # still be there unchanged(there is lots of room for improvement but i needed to see that i works)
     user = User.query.filter_by(idU = id).first() # also still no data integrity and format check so be careful when trying it out
-    user.firstName = request.form.get('newfName')
-    user.lastName = request.form.get('newlName')
-    user.birthdate = newdate
-    user.gender = request.form.get('newGender')
-    user.phone = request.form.get('newPhone')
-    user.email = request.form.get('newEmail')
-    user.password = request.form.get('newPassword')
-    user.right = request.form.get('newRight')
-
-
+    user.firstName = post_data.get('firstName')
+    user.lastName = post_data.get('lastName')
+    user.birthdate = post_data.get('birthdate')
+    user.gender = post_data.get('gender')
+    user.phone = post_data.get('phone')
+    user.email = post_data.get('email')
     db.session.commit()
-    #print(oldUser.birthdate, file=sys.stderr)
-    return redirect("/")
-
+    return jsonify(response_object)
 
 @app.route('/get_user', methods=["GET"])
 def get_user(): # basically it queries the whole User table, creates an array of serilize user objects(see serialize property in "models.User")
@@ -151,7 +151,11 @@ def add_survey():
                        nbOfQuestions=int(post_data.get('nbOfQuestions')),
                        idU=int(post_data.get('idU')))
         db.session.add(newSurvey)
-        db.session.commit()
+        try:
+            db.session.commit()
+            response_object["checkCommit"] = "Success"
+        except:
+            response_object["checkCommit"] = "Fail"
         Surv = db.session.query(func.max(Survey.idS).label("idS")).first()
         idS2 = Surv.idS
     response_object['message'] = 'Survey added!'
@@ -193,7 +197,11 @@ def add_question():
             survey = Survey.query.filter_by(idS=idS).first()
             nbOfQuestions = survey.nbOfQuestions + 1
             survey.nbOfQuestions = nbOfQuestions
-        db.session.commit()
+        try:
+            db.session.commit()
+            response_object["checkCommit"] = "Success"
+        except:
+            response_object["checkCommit"] = "Fail"
     return jsonify(response_object)
     
 @app.route("/update_question", methods=["POST"]) 
@@ -269,7 +277,11 @@ def add_vote():
                        idU=post_data.get('idU'),
                        idQ=post_data.get('idQ'))
         db.session.add(newVote)
-        db.session.commit()
+        try:
+            db.session.commit()
+            response_object["checkCommit"] = "Success"
+        except:
+            response_object["checkCommit"] = "Fail"
     return jsonify(response_object)
 
 @app.route("/delete_vote", methods=["POST"])
@@ -299,9 +311,10 @@ def getVotesAsJson():
     
 
 #login  
-@app.route("/login", methods=["GET","POST"])
+@app.route("/login", methods=["GET", "POST"])
 def login():
     response_object = {'status': 'success'}
+    response_object["NoFound"] = None
     if request.method == 'POST':
         post_data = request.get_json()
         username = post_data.get("userName")
@@ -310,7 +323,7 @@ def login():
         if userN is not None :
             user = User.query.filter_by(userName = username).first()
             if user.check_password(post_data.get("password")):
-                session['username'] = userN;
+                session['username'] = userN
                 token = jwt.encode({
                     'sub': userN,
                     'iat':datetime.utcnow(),

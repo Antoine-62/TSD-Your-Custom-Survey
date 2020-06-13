@@ -86,6 +86,10 @@ export default {
         event.preventDefault();
         this.submitting = true
         this.clearStatus()
+         if (this.invalidUserName || this.invalidPassword) {
+				this.error = true
+				return
+        }
         const payload = {
             userName: this.addUser.Username,
             password: this.addUser.Password,

@@ -1,6 +1,6 @@
 <template>
  <div id="container">
-    <h1>You edit your profile</h1>
+    <h1>You are editing your profile</h1>
     <h1>User {{user.userName}}</h1>
     <form
      id="app"
@@ -34,15 +34,33 @@
     </p>
 
     <p>
-        <label for="gender">Gender</label>
+        <label for="birthdate">Gender</label>
         <input
-            id="gender"
-            name="gender"
-            v-model="user.gender"
-            type="text"
+            id="birthdate"
+            name="birthdate"
+            v-model="user.birthdate"
+            type="date"
             
         >
     </p>
+
+    <p>
+        <label for="Gender">Gender</label>
+        <input type="radio"
+            v-model="user.gender"
+            id="Gender1"
+            name="Gender"
+            value="Male">
+        <label for="Gender1">Male</label>
+
+        <input type="radio"
+            v-model="user.gender"
+            id="Gender2"
+            name="Gender"
+            value="Female">
+        <label for="Gender2">Female</label>
+    </p>
+
 
     <p>
         <label for="phone">Phone</label>
@@ -87,6 +105,7 @@
 
 <script>
 import axios from 'axios';
+import router from '../router';
 import swal from 'sweetalert';
 
 export default {
@@ -138,7 +157,21 @@ export default {
     },
     onSubmit() {
       event.preventDefault();
-     swal("Sorry!, This function is not finish yet.");
+      const payload ={
+            idU: this.user.idU,
+            firstName: this.user.firstName,
+            lastName: this.user.lastName,
+            birthdate: this.user.birthdate,
+            gender: this.user.gender,
+            phone: this.user.phone,
+            email: this.user.email
+      };
+      this.$store.dispatch('editUser', payload)
+       .then(() => { 
+         swal("Congratulations!", "You have edited your profile");
+         router.push({ name: 'myProfile'})})
+       .catch(err => console.log(err))
+     
     },
 
     clearStatus() {

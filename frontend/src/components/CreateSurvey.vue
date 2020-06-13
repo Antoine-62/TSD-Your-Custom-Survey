@@ -1,50 +1,52 @@
 <template>
- <div>
-    <h1>New Survey</h1>
-    <form
-     id="app"
-     @submit="onSubmit"
-     method="post"
-    >
-    <p>
-        <label for="name">Name of the Survey</label>
-        <input
-            id="name"
-            name="name"
-            v-model="addSurveyForm.title"
-            type="text"
-            placeholder="Enter name"
-            :class="{ 'has-error': submitting && invalidTitle }"
-            @focus="clearStatus"
-            
+ <div id="container">
+      <b-card id="card" header="Create a new survey">
+        <form
+        id="app"
+        @submit="onSubmit"
+        method="post"
         >
-    </p>
+        <p>
+            <label for="name">Name of the Survey</label>
+            <input
+                id="name"
+                name="name"
+                v-model="addSurveyForm.title"
+                type="text"
+                placeholder="Enter name"
+                :class="{ 'has-error': submitting && invalidTitle }"
+                @focus="clearStatus"
+                
+            >
+        </p>
 
-    <p>
-        <label for="movie">Category</label>
-        <select
-            id="Category"
-            name="Category"
-            v-model="addSurveyForm.category"
-            required
-            placeholder="Choose category"
-        >
-            <option>Cultural(movies, books ...)</option>
-            <option>Health</option>
-            <option>History</option>
-            <option>Policy</option>
-        </select>
-    </p>
+        <p>
+            <label for="movie">Category</label>
+            <select
+                id="Category"
+                name="Category"
+                v-model="addSurveyForm.category"
+                placeholder="Choose category"
+                :class="{ 'has-error': submitting && invalidCategory }"
+                @focus="clearStatus"
+            >
+                <option>Cultural(movies, books ...)</option>
+                <option>Health</option>
+                <option>History</option>
+                <option>Policy</option>
+            </select>
+        </p>
 
-    <p>
-        <input
-            class="btn btn-danger btn-sm"
-            type="submit"
-            value="Submit"
-        >
-    </p>
+        <p>
+            <input
+                class="btn btn-danger btn-sm"
+                type="submit"
+                value="Submit"
+            >
+        </p>
 
-    </form>
+        </form>
+      </b-card>
 
     <p v-if="error" class="error-message">
 		❗Please fill out all required fields
@@ -75,6 +77,9 @@ export default {
   computed: {
 		invalidTitle() {
 			return this.addSurveyForm.title === ''
+    },
+    invalidCategory() {
+			return this.addSurveyForm.category === ''
 		},
 	},
   methods: {
@@ -83,7 +88,7 @@ export default {
         event.preventDefault();
         this.submitting = true
         this.clearStatus()
-        if (this.invalidTitle) {
+        if (this.invalidTitle || this.invalidCategory) {
 				this.error = true
 				return
 			}
@@ -107,6 +112,31 @@ export default {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped lang="scss">
+$mobile-width-limit: 600px;//maximum width for mobile device
+$desktop-width-limit: 1024px;//minimum width for destock device
+
+#container{
+  margin:0%;
+}
+
+#card{
+  margin: 10% 20%;
+  padding: 0%;
+  max-width: 60%;
+}
+@media only screen and (max-width: $mobile-width-limit) {
+  #card{
+    margin: 10% 5%;
+    max-width: 90%;
+  }
+}
+@media only screen and (min-width: $mobile-width-limit + 1) and (max-width: $desktop-width-limit - 1) {
+  #card{
+    margin: 10% 15%;
+    max-width: 70%;
+  }
+}
+
 [class*='-message'] {
     font-weight: 500;
   }

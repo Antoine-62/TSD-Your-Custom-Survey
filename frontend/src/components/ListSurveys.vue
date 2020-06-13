@@ -77,6 +77,7 @@
 <script>
 import axios from 'axios';
 import router from '../router';
+import swal from 'sweetalert';
 
 export default {
   name: 'ListSuverys',
@@ -144,7 +145,8 @@ export default {
             idS: SurveyId
         };
     axios.post(path, payload)
-    .then(() => {
+    .then(() => { 
+        swal('Deleted!','The survey has been deleted.','success')
         this.getSurveys();
       
     })
@@ -155,9 +157,18 @@ export default {
    },
 
   onDeleteSurvey(survey) {
-        this.removeSurvey(survey.idS);
+        swal({
+          title: 'Are you sure to have to delete this survey?',
+          text: "You won't be able to revert it!",
+          icon: 'warning',
+          buttons: true,
+          dangerMode: true,
+        }).then((willDelete) => {
+            if (willDelete) {
+                this.removeSurvey(survey.idS);
+              }
+        })
     },
-
 
     onEditSurvey(survey){
         const idS = survey.idS;

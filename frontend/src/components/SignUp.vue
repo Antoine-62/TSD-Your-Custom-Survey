@@ -192,6 +192,9 @@ export default {
         invalidBirthdate() {
 			return this.addUser.Birthdate === ''
         },
+        invalidGender() {
+			return this.addUser.Gender === ''
+        },
         invalidPhone() {
 			return this.addUser.Phone === ''
         },
@@ -206,6 +209,17 @@ export default {
 		},
 	},
   methods: {
+    checkPhone() {
+        let res=this.addUser.Phone.match("^[0-9]+$");
+        if(res){
+            if(this.addUser.Phone.length===10)
+            {
+                return true;
+            }
+            
+        }
+        return false;
+      },
 
       ConfirmPass()
       {
@@ -234,13 +248,18 @@ export default {
         event.preventDefault();
         this.submitting = true
         this.clearStatus()
-        if (this.invalidUserName || this.invalidFirstName || this.invalidLastName || this.invalidBirthdate || this.invalidPhone || this.invalidEmail || this.invalidPassword || this.invalidConfirmPassword) {
+        if (this.invalidUserName || this.invalidFirstName || this.invalidLastName || this.invalidBirthdate ||this.invalidGender || this.invalidPhone || this.invalidEmail || this.invalidPassword || this.invalidConfirmPassword) {
 				this.error = true
 				return
         }
         if(this.ConfirmPass() === false)
         {
           swal("Error", "You didn't enter 2 times the same password");
+          return
+        }
+        if(this.checkPhone() === false)
+        {
+          swal("Error", "You entered a wrong number phone");
           return
         }
         const payload = {

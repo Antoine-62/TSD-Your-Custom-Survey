@@ -108,7 +108,7 @@ Vue.use(VueRouter)
     name: 'ListUsers',
     component: ListUsers,
     meta: { 
-      requiresAuth: true
+      requiresAdmin: true
     }
 },
 {
@@ -159,6 +159,19 @@ router.beforeEach((to, from, next) => {
           })
         }
 
+  } else if(to.matched.some(record => record.meta.requiresAdmin)) {
+    if(store.getters.isLoggedIn && store.getters.isAmin){
+      next()
+    }
+    else if (store.getters.isLoggedIn){
+        next({ name: 'ListSuveys'})
+    }
+    else{
+      next({
+        path: '/SignIn',
+        params: { nextUrl: to.fullPath }
+    })
+    }
   } else if(to.matched.some(record => record.meta.guest)) {
       if(store.getters.isLoggedIn){
           next({ name: 'ListSuveys'})

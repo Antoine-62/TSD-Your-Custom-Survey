@@ -1,5 +1,6 @@
 <template>
  <div>
+   <b-card id="card" :header="this.titleSurvey">
     <h1>Title : {{this.titleSurvey}}</h1>
     <h1>Category : {{this.category}}</h1>
     <h2>Question n°{{numberOfQuestion}}</h2>
@@ -10,13 +11,13 @@
     >
 
      <p>
-        <label for="Gender">Answer type :</label>
+        <label for="answerType">Answer type :</label>
         <input type="radio"
             v-model="addQuestionForm.answerType"
             id="answerType1"
             name="answerType"
             value="single">
-        <label for="Gender1">Only one answer possible</label>
+        <label for="answerType1">Only one answer possible</label>
 
         <input type="radio"
             v-model="addQuestionForm.answerType"
@@ -111,6 +112,7 @@
             value="Submit"
         >
     </p>
+    </form>
 
     <button
         type="button"
@@ -118,8 +120,7 @@
         @click="addSurvey()"
     >
     Save Survey</button>
-
-    </form>
+    </b-card>
     <p v-if="error" class="error-message">
 		❗Please fill out all required fields
     </p>
@@ -159,6 +160,10 @@ export default {
   },
 
   computed: {
+    
+    invalidAnswerType() {
+			return this.addQuestionForm.answerType === ''
+    },
 		invalidStatement() {
 			return this.addQuestionForm.statement === ''
     },
@@ -175,6 +180,7 @@ export default {
     initForm() {
       this.clearStatus()
       this.submitting=false;
+      this.addQuestionForm.answerType = '';
       this.addQuestionForm.statement = '';
       this.addQuestionForm.Answer1 = '';
       this.addQuestionForm.Answer2 = '';
@@ -216,22 +222,29 @@ export default {
       
     },
     addSurvey() {
-      this.addpayload();
-      const payload ={
-            title: this.titleSurvey,
-            category: this.category,
-            nbOfQuestions: this.numberOfQuestion,
-            idU: this.$store.state.user.idU,
-      };
-      const path = 'http://localhost:5000/add_survey';
-      axios.post(path, payload)
-        .then((res) => {
-          this.addQuestions(res.data.idS);
-        })
-        .catch((error) => {
-          // eslint-disable-next-line
-          console.log(error);
-        });
+        this.submitting = true
+        this.clearStatus()
+        if (this.invalidStatement||this.invalidAnswer1||this.invalidAnswer2||this.invalidAnswerType) {
+          this.error=true
+				return 
+			}
+        this.addpayload();
+        const payload ={
+              title: this.titleSurvey,
+              category: this.category,
+              nbOfQuestions: this.numberOfQuestion,
+              idU: this.$store.state.user.idU,
+        };
+        const path = 'http://localhost:5000/add_survey';
+        axios.post(path, payload)
+          .then((res) => {
+            this.addQuestions(res.data.idS);
+          })
+          .catch((error) => {
+            // eslint-disable-next-line
+            console.log(error);
+          });
+     
     },
 
     addpayload(){
@@ -251,9 +264,13 @@ export default {
 
     onSubmit(event) {
       event.preventDefault();
+      this.addQuestOnSub();
+    },
+
+    addQuestOnSub(){
       this.submitting = true
         this.clearStatus()
-        if (this.invalidStatement||this.invalidAnswer1||this.invalidAnswer2) {
+        if (this.invalidStatement||this.invalidAnswer1||this.invalidAnswer2||this.invalidAnswerType) {
           this.error=true
 				return 
 			}

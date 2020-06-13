@@ -27,6 +27,16 @@ export default new Vuex.Store({
     auth_error(state){
       state.status = 'error'
     },
+    user_edit(state, payload){
+        state.status = 'success'
+        state.user.firstname = payload.firstname
+        state.user.lastName = payload.lastName
+        state.user.birthdate = payload.birthdate
+        state.user.gender = payload.gender
+        state.user.phone = payload.phone
+        state.user.email = payload.email
+    },
+    
     logout(state){
       state.status = ''
       state.token = ''
@@ -70,11 +80,26 @@ export default new Vuex.Store({
       delete axios.defaults.headers.common['Authorization']
       resolve()
     })
-  }
   },
+    editUser({commit}, payload){
+      return new Promise((resolve, reject) => {
+        const path = "http://localhost:5000/update_user";
+        axios.post(path, payload)
+        .then(res => {
+          commit('user_edit', payload)
+          resolve(res)
+        })
+        .catch(err => {
+          console.log("error for edit user's data")
+          reject(err)
+        })
+    })
+  },
+},
   modules: {
   },
   getters : {
+    isAmin: state => state.user.right ===2,
     isLoggedIn: state => !!state.token,
     authStatus: state => state.status,
   }

@@ -62,6 +62,20 @@ Then you can run the npm server for frontend :
 npm run serve
 ```
 Now you can handle the application with the following url : http://localhost:8080/
+#### Unit tests with Cypress
+
+To do the unit tests, please open a new terminal (we should have 3 open terminals - one to run flask server - one to run the npm server - and this one for unit tests), then execute the following commands :
+```
+cd frontend
+npx cypress open
+```
+
+If you meet problems when lauching cypress, please try to install it, then try again :
+```
+npm install cypress --save-dev
+```
+Now, you should have access to the unit tests. Please execute them in the order, or you could meet some problems (for instance, in the 2nd file, we create a user, that we'll serve to test the survey functions in the 5th file.
+
 
 ## Students
 The project is realized by :

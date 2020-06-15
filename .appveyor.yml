@@ -11,7 +11,6 @@ install:
   - npm --version
   - npm i -g @cypress/commit-message-install @bahmutov/print-env
   - print-env APPVEYOR
-  - commit-message-install --else "npm ci"
 
 cache:
   # cache NPM packages and Cypress binary

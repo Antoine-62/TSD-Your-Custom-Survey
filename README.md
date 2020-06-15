@@ -37,8 +37,7 @@ Now you have some data in your database tables. You can check it by watching the
 Then, we can run the tests :
 ```
 pip install pytest
-cd tests
-pytest -vv
+py.test --ignore=frontend
 ```
 **Warning :** We didn't have the time to finish the unit tests for the 1st sprint, so it will only test the function which retrieve data from Survey table.   
 Finally, we can run the server for the backend.

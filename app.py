@@ -365,23 +365,27 @@ def getSurveysAsJson():
 @app.route('/download_survey', methods=["POST"])
 def download_survey():
     post_data = request.get_json()
-    asJson = []
     idS = post_data.get("idS")
-    print(idS)
-    surveys = Survey.query.filter_by(idS = idS).all()
-    #surveyAsJson = survey.serialize
-    column_names = ['idS', 'title', 'category', 'nbOfQuestions', 'idU']
-    #output.headers["Content-type"] = "text/csv"
-    #output = excel.make_response_from_tables(db.session, [Survey], "handsontable.html")
-    output = excel.make_response_from_query_sets(surveys, column_names, "xls")
-    #output.headers["Content-type"] = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+   # print(idS)
+    survey = Survey.query.filter_by(idS = idS).first()
+    questions = Question.query.filter_by(idS = idS).all()
+    myDict = []
+    for q in questions:
+        qVotes = Vote.query.filter_by(idQ = q.idQ).all()
+        for v in qVotes:
+            myV = {}
+            myV['surveyName'] = survey.title
+            myV['category'] = survey.category
+            myV['statement'] = q.statement
+            myV['answer'] = v.answer
+            myDict.append(myV)
+            print(myV)
+
+  #  print(myDict)
+    output = excel.make_response_from_records(myDict, "xls")
     output.headers["Content-type"] = "application/vnd.ms-excel"
-    #print(surveyAsJson)
     return output
 
-# @app.route('/download_survey/<answers>', methods=["GET"])
-# def get_answers(answers):
-#     return send_file("answers.xls", as_attachment=True)
 
 if __name__ == '__main__':
     excel.init_excel(app)

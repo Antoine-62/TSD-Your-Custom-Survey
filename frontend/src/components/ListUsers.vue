@@ -141,13 +141,22 @@ created() {
   text-align: center;
   color: #2c3e50;
   margin: 2% 0%;
+  width: 100%;
 }
 
-$mobile-width-limit: 600px;//maximum width for mobile device
-$desktop-width-limit: 1024px;//minimum width for destock device
+td{
+    border-top-width: 1px;
+    border-top-style: solid;
+    border-top-color: #2c3e50;
+  }
+
+$mobile-width-limit: 700px;//maximum width for mobile device
+$desktop-width-limit2: 900px;//minimum width for destock device
+$desktop-width-limit: 1200px;//minimum width for destock device
 @media only screen and (max-width: $mobile-width-limit) {
   #card{
-    margin: 3% 2.5%;
+    margin: 12% 2.5%;
+    margin-bottom: 40%;
     max-width: 95%;
   }
   .options1, .options2, .options3{
@@ -155,9 +164,21 @@ $desktop-width-limit: 1024px;//minimum width for destock device
   }
 
 }
-@media only screen and (min-width: $mobile-width-limit + 1) and (max-width: $desktop-width-limit - 1) {
+@media only screen and (min-width: $mobile-width-limit + 1) and (max-width: $desktop-width-limit2 - 1) {
   #card{
-    margin: 3% 50%;
+    margin: 10% 5%;
+    margin-bottom: 30%;
+    max-width: 90%;
+  }
+  .options1, .options2{
+     display: none;
+  }
+}
+
+@media only screen and (min-width: $desktop-width-limit2 + 1) and (max-width: $desktop-width-limit - 1) {
+  #card{
+    margin: 8% 5%;
+    margin-bottom: 20%;
     max-width: 90%;
   }
   .options1{

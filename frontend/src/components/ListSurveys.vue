@@ -51,13 +51,18 @@
                       @click="onEditSurvey(survey)"
                       >
                       Edit</button>
-
                   <button 
                       type="button"
                       class="btn btn-danger btn-sm"
                       @click="onDeleteSurvey(survey)"
                       >
                       Delete</button>
+                  <button
+                      type="button"
+                      class="btn btn-danger btn-sm"
+                      @click="onDownloadSurvey(survey)"
+                      >
+                      Download</button>
                 </div>
                 <div v-else>
                   <button 
@@ -82,6 +87,7 @@
 import axios from 'axios';
 import router from '../router';
 import swal from 'sweetalert';
+import FileSaver from 'file-saver'
 
 export default {
   name: 'ListSuverys',
@@ -204,6 +210,25 @@ export default {
           category: category
       } })
     },
+    downloadSurvey(SurveyId){
+        const path = `http://localhost:5000/download_survey`;
+        const payload = {
+            idS: SurveyId
+        };
+        axios.post(path, payload,{responseType: 'blob'})
+        .then((response) => {
+            FileSaver.saveAs(response.data, "YourSurvey.xls");
+            
+        })
+        .catch((error) => {
+          // eslint-disable-next-line
+            console.error(error);
+        });
+    },
+
+    onDownloadSurvey(survey){
+        this.downloadSurvey(survey.idS)
+    }
   
  },
 created() {

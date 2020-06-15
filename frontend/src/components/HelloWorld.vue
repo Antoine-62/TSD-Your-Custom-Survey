@@ -1,25 +1,27 @@
 <template>
-  <div class="hello">
-    <h1>What is YCS ?</h1>
-    <h2>An application to create surveys</h2>
-    <h3>YCS (acronym for Your Custom Survey) is an application which will allow you to create your own survey :</h3>
+  <div>
+    <h1 id="wherePage">What is YCS ?</h1>
+    <b-card id="card">
+    <h2><strong>An application to create surveys</strong></h2>
+    <h3><strong>YCS (acronym for Your Custom Survey) is an application which will allow you to create your own survey</strong></h3>
     <ul>
       <li>For each survey, you can create unlimited number of questions</li>
       <li>For each question, you can create 5 answers, and precise if it's multiple or unique answer</li>
       <li>Get the results for each of your surveys</li>
     </ul>
-    <h3>The teams</h3>
+    <h3><strong>The team</strong></h3>
     <ul>
       <li>Antoine Landrieu</li>
       <li>Thomas Gurtler</li>
     </ul>
-    <h3>Technologies used</h3>
+    <h3><strong>Technologies used</strong></h3>
     <ul>
       <li>Frontend : Vue.js</li>
       <li>Backend : Flask</li>
       <li>Database : Sqlite</li>
     </ul>
-  </div>
+  </b-card>
+</div>
 </template>
 
 <script>
@@ -33,7 +35,16 @@ export default {
 h3 {
   margin: 40px 0 0;
 }
-
+#wherePage{
+  margin:0%;
+  padding: 1%;
+  background-color: #eeeeee;
+}
+#card{
+  margin: 1.5% 2.5%;
+  padding: 2.5%;
+  max-width: 95%;
+}
 a {
   color: #42b983;
 }

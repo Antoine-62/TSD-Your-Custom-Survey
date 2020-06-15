@@ -24,16 +24,16 @@
           <thead>
             <tr>
               <th scope="Title">Title</th>
-              <th scope="Categorie">Categorie</th>
-              <th scope="Number">Number of question</th>
+              <th class="options2" scope="Categorie">Categorie</th>
+              <th class="options1" scope="Number">Number of question</th>
               <th></th>
             </tr>
           </thead>
           <tbody>
             <tr v-for="(survey, index) in surveys" :key="index">
               <td>{{ survey.title }}</td>
-              <td>{{ survey.category }}</td>
-              <td>{{ survey.nbOfQuestions }} </td>
+              <td class="options2">{{ survey.category }}</td>
+              <td class="options1">{{ survey.nbOfQuestions }} </td>
               <td>
                   <button 
                       type="button"
@@ -48,6 +48,12 @@
                       @click="onResultSurvey(survey)"
                       >
                       Result</button>
+                  <button 
+                      type="button"
+                      class="btn btn-danger btn-sm"
+                      @click="onEditSurvey(survey)"
+                      >
+                      Edit</button>
                   <button 
                       type="button"
                       class="btn btn-danger btn-sm"
@@ -75,7 +81,7 @@
 import axios from 'axios';
 import FileSaver from 'file-saver'
 import swal from 'sweetalert';
-//import router from '../router';
+import router from '../router';
 
 export default {
   name: 'MyProfile',
@@ -145,6 +151,12 @@ export default {
           numberOfQuestion: number
       } })
     },
+    onEditSurvey(survey){
+        const idS = survey.idS;
+        router.push({ name: 'EditSurvey', params :{
+          idS: idS
+        } })
+    },
 
     onResultSurvey(survey){
         const idS = survey.idS;
@@ -194,6 +206,15 @@ created() {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped lang="scss">
+$mobile-width-limit: 600px;//maximum width for mobile device
+$desktop-width-limit: 1024px;//minimum width for destock device
+.options1{
+  display: table-cell;
+}
+
+.options2{
+  display: table-cell;
+}
 #container{
   width: 100%;
   font-size: 20px;
@@ -216,6 +237,22 @@ created() {
   color: #2c3e50;
   width: 70%;
   margin: 5% 15%;
+
+  td{
+    border-top-width: 1px;
+    border-top-style: solid;
+    border-top-color: #2c3e50;
+  }
+}
+@media only screen and (max-width: $mobile-width-limit) {
+  .options1, .options2{
+  display: none;
+}
+}
+@media only screen and (min-width: $mobile-width-limit + 1) and (max-width: $desktop-width-limit - 1) {
+  .options1{
+  display: none;
+}
 }
 button{
   margin: 2%;

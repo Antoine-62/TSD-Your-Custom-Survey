@@ -257,6 +257,8 @@ $desktop-width-limit: 1024px;//minimum width for destock device
     max-width: 80%;
   }
 }
+
+
 button{
   margin: 2%;
 }

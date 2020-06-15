@@ -240,6 +240,21 @@ created() {
 button{
   margin: 2%;
 }
+
+$mobile-width-limit: 700px;//maximum width for mobile device
+$desktop-width-limit: 1024px;//minimum width for destock device
+@media only screen and (max-width: $mobile-width-limit) {
+  #card{
+    margin: 15% 5%;
+    max-width: 90%;
+  }
+}
+@media only screen and (min-width: $mobile-width-limit + 1) and (max-width: $desktop-width-limit - 1) {
+  #card{
+    margin: 8% 12.5%;
+    max-width: 75%;
+  }
+}
 [class*='-message'] {
     font-weight: 500;
   }

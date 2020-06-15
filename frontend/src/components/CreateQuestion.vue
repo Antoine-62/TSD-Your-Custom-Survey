@@ -1,9 +1,10 @@
 <template>
  <div>
-   <b-card id="card" header="Create Question">
-    <h2 class="title">Survey : {{this.titleSurvey}}</h2>
-    <h2 class="title">Category : {{this.category}}</h2>
-    <h2 class="title">Question n°{{numberOfQuestion}}</h2>
+   <h1 id="wherePage">Create Question</h1>
+   <b-card id="card">
+    <h2 class="title"><strong>Survey : {{this.titleSurvey}}</strong></h2>
+    <h2 class="title"><strong>Category : {{this.category}}</strong></h2>
+    <h3 class="title">Question n°{{numberOfQuestion}}</h3>
     <form
      id="app"
      @submit="onSubmit"
@@ -296,6 +297,11 @@ export default {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped lang="scss">
+#wherePage{
+  margin:0%;
+  padding: 1%;
+  background-color: #eeeeee;
+}
 #card{
   margin: 5% 20%;
   padding: 0%;

@@ -28,8 +28,6 @@ export default {
   background-color :  #343a40;
   color :  #f8f9fa;
   padding: 1%;
-  /* position: absolute; 
-    bottom: 0%;*/
     width: 100%;
   
   }

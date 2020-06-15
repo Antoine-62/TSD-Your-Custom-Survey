@@ -1,9 +1,9 @@
 <template>
  <div>
-   <b-card id="card" :header="this.titleSurvey">
-    <h1>Title : {{this.titleSurvey}}</h1>
-    <h1>Category : {{this.category}}</h1>
-    <h2>Question n°{{numberOfQuestion}}</h2>
+   <b-card id="card" header="Create Question">
+    <h2 class="title">Survey : {{this.titleSurvey}}</h2>
+    <h2 class="title">Category : {{this.category}}</h2>
+    <h2 class="title">Question n°{{numberOfQuestion}}</h2>
     <form
      id="app"
      @submit="onSubmit"
@@ -17,7 +17,7 @@
             id="answerType1"
             name="answerType"
             value="single">
-        <label for="answerType1">Only one answer possible</label>
+        <label for="answerType1">Only one answer possible</label> <br/>
 
         <input type="radio"
             v-model="addQuestionForm.answerType"
@@ -296,6 +296,25 @@ export default {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped lang="scss">
+#card{
+  margin: 5% 20%;
+  padding: 0%;
+  max-width: 60%;
+}
+$mobile-width-limit: 600px;//maximum width for mobile device
+$desktop-width-limit: 1024px;//minimum width for destock device
+@media only screen and (max-width: $mobile-width-limit) {
+  #card{
+    margin: 10% 5%;
+    max-width: 90%;
+  }
+}
+@media only screen and (min-width: $mobile-width-limit + 1) and (max-width: $desktop-width-limit - 1) {
+  #card{
+    margin: 10% 15%;
+    max-width: 70%;
+  }
+}
 [class*='-message'] {
     font-weight: 500;
   }

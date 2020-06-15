@@ -1,14 +1,14 @@
 <template>
  <div>
-    <h1>Title : {{this.titleSurvey}}</h1>
-    <h1>Category : {{this.category}}</h1>
-    <h2>Question n°{{question.number}}</h2>
+    <h1 id="wherePage">You are Voting <strong>{{this.titleSurvey}} - Category : {{this.category}}</strong></h1>
+    <b-card id="card">
+    <div class="NumberQ"><h3>Question n°{{question.number}}</h3></div>
     <form
      id="app"
      @submit="onSubmit"
      method="post"
     >
-    <h3>{{question.statement}}</h3>
+    <div class="statement"><h3><strong>{{question.statement}}</strong></h3></div>
     <div v-if="question.answerType === 'single'">
 
     <p>
@@ -115,6 +115,7 @@
     <p v-if="error" class="error-message">
 		❗Please answer to the question before submit
     </p>
+  </b-card>
  </div>
 </template>
 
@@ -138,12 +139,32 @@ export default {
         question: '',
         addVoteForm: {
             Answer: '',
+            Answer1: '',
+            Answer2: '',
+            Answer3: '',
+            Answer4: '',
+            Answer5: '',
       }
     }
   },
   computed: {
 		invalidAnswer() {
 			return this.addVoteForm.Answer === ''
+    },
+    invalidAnswer1() {
+			return this.addVoteForm.Answer1 === ''
+    },
+    invalidAnswer2() {
+			return this.addVoteForm.Answer2 === ''
+    },
+    invalidAnswer3() {
+			return this.addVoteForm.Answer3 === ''
+    },
+    invalidAnswer4() {
+			return this.addVoteForm.Answer4 === ''
+    },
+    invalidAnswer5() {
+			return this.addVoteForm.Answer5 === ''
     },
   },
   methods: {
@@ -192,6 +213,10 @@ export default {
 				return 
 			}*/
         if(this.question.answerType === "single") {
+          if (this.invalidAnswer) {
+            this.error=true
+            return
+          }
           const payload = {
               answer: this.addVoteForm.Answer,
               idQ: this.question.idQ,
@@ -200,6 +225,11 @@ export default {
           this.addVote(payload);
         }
         else{
+          if (this.invalidAnswer1 && this.invalidAnswer2 && this.invalidAnswer3 && this.invalidAnswer4 && this.invalidAnswer5)
+          {
+            this.error=true
+            return
+          }
           if(this.addVoteForm.Answer1)
           {
             const payload = {
@@ -277,6 +307,32 @@ export default {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped lang="scss">
+#wherePage{
+  margin:0%;
+  padding: 1%;
+  background-color: #eeeeee;
+}
+
+#card{
+  margin: 6.5% 30%;
+  padding: 1.5%;
+  max-width: 60%;
+}
+$mobile-width-limit: 700px;//maximum width for mobile device
+$desktop-width-limit: 1024px;//minimum width for destock device
+@media only screen and (max-width: $mobile-width-limit) {
+  #card{
+    margin: 15% 5%;
+    max-width: 90%;
+  }
+}
+@media only screen and (min-width: $mobile-width-limit + 1) and (max-width: $desktop-width-limit - 1) {
+  #card{
+    margin: 8% 12.5%;
+    max-width: 75%;
+  }
+}
+
 [class*='-message'] {
     font-weight: 500;
   }

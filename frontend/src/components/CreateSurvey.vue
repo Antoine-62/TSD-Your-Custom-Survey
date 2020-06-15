@@ -1,6 +1,7 @@
 <template>
  <div id="container">
-      <b-card id="card" header="Create a new survey">
+    <h1 id="wherePage">Create a new survey</h1>
+      <b-card id="card">
         <form
         id="app"
         @submit="onSubmit"
@@ -112,11 +113,14 @@ export default {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped lang="scss">
-$mobile-width-limit: 600px;//maximum width for mobile device
-$desktop-width-limit: 1024px;//minimum width for destock device
 
 #container{
   margin:0%;
+}
+#wherePage{
+  margin:0%;
+  padding: 1%;
+  background-color: #eeeeee;
 }
 
 #card{
@@ -124,6 +128,9 @@ $desktop-width-limit: 1024px;//minimum width for destock device
   padding: 0%;
   max-width: 60%;
 }
+
+$mobile-width-limit: 600px;//maximum width for mobile device
+$desktop-width-limit: 1024px;//minimum width for destock device
 @media only screen and (max-width: $mobile-width-limit) {
   #card{
     margin: 10% 5%;

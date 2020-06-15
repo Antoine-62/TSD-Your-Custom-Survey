@@ -1,8 +1,8 @@
 <template>
  <div>
-    <h1>Title : {{survey.title}}</h1>
+    <h1 id="surveyTitle">Title : {{survey.title}}</h1>
     <h1>Category : {{survey.category}}</h1>
-    <h2>Question n°{{survey.nbOfQuestions+1}}</h2>
+    <h2 id="numberQ">Question n°{{survey.nbOfQuestions+1}}</h2>
     <form
      id="app"
      @submit="onSubmit"
@@ -149,6 +149,9 @@ export default {
   },
 
   computed: {
+    invalidAnswerType() {
+			return this.addQuestionForm.answerType === ''
+    },
 		invalidStatement() {
 			return this.addQuestionForm.statement === ''
     },
@@ -212,7 +215,7 @@ export default {
       event.preventDefault();
       this.submitting = true
         this.clearStatus()
-        if (this.invalidStatement||this.invalidAnswer1||this.invalidAnswer2) {
+        if (this.invalidStatement||this.invalidAnswer1||this.invalidAnswer2||this.invalidAnswerType) {
           this.error=true
 				return 
 			}

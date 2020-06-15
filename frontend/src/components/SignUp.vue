@@ -1,6 +1,6 @@
 <template>
- <div>
-    <h1>Sign up</h1>
+<div>
+<b-card id="SignUp" header="Sign Up">
     <form
      id="app"
      @submit="onSubmit"
@@ -63,20 +63,20 @@
     </p>
 
     <p>
-        <label for="Gender">Gender</label>
+        <label for="Gender">Gender : </label>
         <input type="radio"
             v-model="addUser.Gender"
             id="Gender1"
             name="Gender"
             value="Male">
-        <label for="Gender1">Male</label>
+        <label for="Gender1"> Male </label>
 
         <input type="radio"
             v-model="addUser.Gender"
             id="Gender2"
             name="Gender"
             value="Female">
-        <label for="Gender2">Female</label>
+        <label for="Gender2"> Female </label>
     </p>
 
     <p>
@@ -151,6 +151,7 @@
     <p v-if="success" class="success-message">
 		✅ Survey successfully created
     </p>
+ </b-card>
  </div>
 </template>
 
@@ -297,6 +298,11 @@ export default {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped lang="scss">
+#SignUp{
+  margin: 5% 25%;
+  padding: 0%;
+  max-width: 50%;
+}
 [class*='-message'] {
     font-weight: 500;
   }

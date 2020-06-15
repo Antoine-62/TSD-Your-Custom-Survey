@@ -1,30 +1,31 @@
 <template>
  <div id="container">
-   <h1>User list</h1>
-
+   <h1 id="wherePage">User list</h1>
+    <b-card id="card">
     <table id="listSurvey">
           <thead>
             <tr>
               <th scope="Username">Username</th>
-              <th scope="Firstname">First Name</th>
-              <th scope="Lastnamr">Last Name</th>
-              <th scope="Birthdate">Birthdate</th>
-              <th scope="Gender">Gender</th>
-              <th scope="Phone">Phone</th>
-              <th scope="Email">Email</th>
+              <th class="options3" scope="Firstname">First Name</th>
+              <th class="options3" scope="Lastname">Last Name</th>
+              <th class="options1" scope="Birthdate">Birthdate</th>
+              <th class="options1" scope="Gender">Gender</th>
+              <th class="options2" scope="Phone">Phone</th>
+              <th class="options3" scope="Email">Email</th>
             </tr>
           </thead>
           <tbody>
-            <tr v-for="(user, index) in userList" :key="index">
+            <tr v-for="(user, index) in userList" :key="index" :id="user.userName">
               <td>{{ user.userName }}</td>
-              <td>{{ user.firstName }}</td>
-              <td>{{ user.lastName }} </td>
-              <td>{{ user.birthdate }}</td>
-              <td>{{ user.gender }}</td>
-              <td>{{ user.phone }} </td>
-              <td>{{ user.email }}</td>
+              <td class="options3">{{ user.firstName }}</td>
+              <td class="options3">{{ user.lastName }} </td>
+              <td class="options1">{{ user.birthdate }}</td>
+              <td class="options1">{{ user.gender }}</td>
+              <td class="options2">{{ user.phone }} </td>
+              <td class="options3">{{ user.email }}</td>
               <td>
                 <button 
+                    id="DeleteUser"
                     type="button"
                     class="btn btn-danger btn-sm"
                     @click="onDeleteUser(user)"
@@ -34,7 +35,7 @@
             </tr>
           </tbody>
         </table>
-
+      </b-card>
  </div>
 </template>
 
@@ -109,7 +110,29 @@ created() {
 <style scoped lang="scss">
 #container{
   width: 100%;
+  height:100%;
   font-size: 20px;
+}
+
+#card{
+  margin: 5% 7.5%;
+  padding: 2.5%;
+  max-width: 85%;
+}
+#wherePage{
+  margin:0%;
+  padding: 1%;
+  background-color: #eeeeee;
+}
+.options1{
+  display: table-cell;
+}
+
+.options2{
+  display: table-cell;
+}
+.options3{
+  display: table-cell;
 }
 #listSurvey {
   font-family: Avenir, Helvetica, Arial, sans-serif;
@@ -117,8 +140,29 @@ created() {
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
   color: #2c3e50;
-  width: 70%;
-  margin: 5% 15%;
+  margin: 2% 0%;
+}
+
+$mobile-width-limit: 600px;//maximum width for mobile device
+$desktop-width-limit: 1024px;//minimum width for destock device
+@media only screen and (max-width: $mobile-width-limit) {
+  #card{
+    margin: 3% 2.5%;
+    max-width: 95%;
+  }
+  .options1, .options2, .options3{
+     display: none;
+  }
+
+}
+@media only screen and (min-width: $mobile-width-limit + 1) and (max-width: $desktop-width-limit - 1) {
+  #card{
+    margin: 3% 50%;
+    max-width: 90%;
+  }
+  .options1{
+     display: none;
+  }
 }
 button{
   margin: 2%;

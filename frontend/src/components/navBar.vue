@@ -8,18 +8,17 @@
             <b-navbar-toggle target="nav-collapse"></b-navbar-toggle>
             <b-collapse id="nav-collapse" is-nav>
               <b-navbar-nav id="router" v-if="isLoggedIn">
-                <router-link to="/ListSuveys">Surveys List</router-link> <span>|</span>
-                <router-link to="/CreateSurvey">Create a Survey</router-link>
+                <router-link to="/ListSuveys">Surveys List </router-link> <span class="separator">| |</span>
+                <router-link to="/CreateSurvey">Create a Survey</router-link> <span class="separator">| |</span>
              </b-navbar-nav>
-            </b-collapse>
-                 <b-collapse id="nav-collapse 2" is-nav>
+            
                  <b-navbar-nav class ="ml-auto" v-if="isLoggedIn"> 
-                      <router-link to="/ListUsers" v-if="$store.state.user.right === 2">List Users</router-link><span>|</span>
-                      <router-link to="/myProfile">My Profile</router-link><span>|</span>
+                      <router-link to="/ListUsers" v-if="$store.state.user.right === 2">List Users</router-link><span class="separator">| |</span>
+                      <router-link to="/myProfile">My Profile</router-link><span class="separator">| |</span>
                       <a id="logout" @click="logout">Logout</a>
                   </b-navbar-nav>
                   <b-navbar-nav class ="ml-auto" v-else>                          
-                        <router-link to="/SignIN">Sign in</router-link><span>|</span>
+                        <router-link to="/SignIN">Sign in</router-link><span class="separator">| |</span>
                         <router-link to="/SignUp">Sign up</router-link>
                   </b-navbar-nav>
             </b-collapse>
@@ -46,11 +45,6 @@ export default {
 </script>
 
 <style lang="scss">
-b-navbar{
-  span{
-     color: #007bff;
-  }
-}
   a {
     font-weight: bold;
     color: #007bff;
@@ -66,8 +60,14 @@ b-navbar{
   }
 
   #logout{
-    color: #007bff;
+    color: #2183ec;
     cursor: pointer;
   }
+
+
+  .separator{
+     color: #343a40;
+  }
+
 
 </style>

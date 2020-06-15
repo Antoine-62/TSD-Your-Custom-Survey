@@ -1,7 +1,8 @@
 <template>
  <div id="container">
-    <h1>You are editing your profile</h1>
-    <h1>User {{user.userName}}</h1>
+    <h1 id="wherePage">You are editing your profile</h1>
+    <b-card id="card">
+      <h1 id="username">User : {{user.userName}}</h1>
     <form
      id="app"
      @submit="onSubmit"
@@ -34,7 +35,7 @@
     </p>
 
     <p>
-        <label for="birthdate">Gender</label>
+        <label for="birthdate">Birthdate</label>
         <input
             id="birthdate"
             name="birthdate"
@@ -99,7 +100,7 @@
     <p v-if="success" class="success-message">
 		✅ Question successfully edited
     </p>
-  
+    </b-card>
  </div>
 </template>
 
@@ -127,7 +128,27 @@ export default {
         email: '',
       }
     };
-  },   
+  }, 
+  computed: {
+      invalidFirstName(){
+			return this.user.firstName === ''
+        },
+        invalidLastName() {
+			return this.user.lastName === ''
+        },
+        invalidBirthdate() {
+			return this.user.birthdate === ''
+        },
+        invalidGender() {
+			return this.user.gender === ''
+        },
+        invalidPhone() {
+			return this.user.phone === ''
+        },
+        invalidEmail() {
+			return this.user.email === ''
+        }
+	},  
   methods: {
     getSurveys() {
       const path = 'http://localhost:5000';
@@ -157,6 +178,12 @@ export default {
     },
     onSubmit() {
       event.preventDefault();
+      this.submitting = true
+      this.clearStatus()
+      if (this.invalidFirstName || this.invalidLastName || this.invalidBirthdate ||this.invalidGender || this.invalidPhone || this.invalidEmail) {
+				this.error = true
+				return
+        }
       const payload ={
             idU: this.user.idU,
             firstName: this.user.firstName,
@@ -204,6 +231,31 @@ created() {
   color: #2c3e50;
   width: 70%;
   margin: 5% 15%;
+}
+#wherePage{
+  margin:0%;
+  padding: 1%;
+  background-color: #eeeeee;
+}
+
+#card{
+  margin: 3% 12.5%;
+  padding: 1.5%;
+  max-width: 75%;
+}
+$mobile-width-limit: 700px;//maximum width for mobile device
+$desktop-width-limit: 1024px;//minimum width for destock device
+@media only screen and (max-width: $mobile-width-limit) {
+  #card{
+    margin: 2% 5%;
+    max-width: 90%;
+  }
+}
+@media only screen and (min-width: $mobile-width-limit + 1) and (max-width: $desktop-width-limit - 1) {
+  #card{
+    margin: 3.5% 10%;
+    max-width: 80%;
+  }
 }
 button{
   margin: 2%;

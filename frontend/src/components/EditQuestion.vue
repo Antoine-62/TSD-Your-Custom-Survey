@@ -1,8 +1,10 @@
 <template>
  <div id="container">
-    <h1>Survey : {{survey.title}}</h1>
-    <h1>Question n°{{question.number}}</h1>
-    <h1>Type of answer : {{question.answerType}}</h1>
+   <h1 id="TitlePage">You are editing a question</h1>
+   <b-card id="card">
+    <h2 id="surveyTitle"><strong>Survey : {{survey.title}}</strong></h2>
+    <h2 id="numberQ"><strong>Question n°{{question.number}}</strong></h2>
+    <h3 id="AnsType">Type of answer : {{question.answerType}}</h3><br/>
     <form
      id="app"
      @submit="onSubmit"
@@ -94,7 +96,7 @@
     <p v-if="success" class="success-message">
 		✅ Question successfully edited
     </p>
-  
+  </b-card>
  </div>
 </template>
 
@@ -190,7 +192,7 @@ export default {
       const path = 'http://localhost:5000/update_question';
       axios.post(path, payload)
         .then(() => {
-            swal("Congratulations!, You edited a question.");
+            swal("Congratulations! You edited a question.");
             const idS = this.survey.idS;
             router.push({ name: 'EditSurvey', params :{
                 idS: idS
@@ -220,19 +222,21 @@ created() {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped lang="scss">
+#card{
+  margin: 3% 20%;
+  padding: 2%;
+  max-width: 60%;
+}
+#TitlePage{
+  margin:0%;
+  padding: 1%;
+  background-color: #eeeeee;
+}
 #container{
   width: 100%;
   font-size: 20px;
 }
-#listSurvey {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-  width: 70%;
-  margin: 5% 15%;
-}
+
 button{
   margin: 2%;
 }

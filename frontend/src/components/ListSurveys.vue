@@ -1,6 +1,6 @@
 <template>
  <div id="container">
-    <h1>Surveys List</h1>
+    <h1 id="wherePage">Surveys List</h1><br/>
     <label>Search : </label><input type="text" v-model="search" placeholder="Search title.."/><br/><br/>
     <label>Category : </label><select
             id="Category"
@@ -15,19 +15,21 @@
             <option>History</option>
             <option>Policy</option>
         </select>
+    <b-card id="card">
     <table id="listSurvey">
           <thead>
             <tr>
               <th scope="Title">Title</th>
-              <th scope="Categorie">Categorie</th>
-              <th scope="Number">Number of question</th>
+              <th class="options2" scope="Categorie">Categorie</th>
+              <th class="options1" scope="Number">Number of question</th>
             </tr>
           </thead>
           <tbody>
+            
             <tr v-for="(survey, index) in filteredList" :key="index">
               <td>{{ survey.title }}</td>
-              <td>{{ survey.category }}</td>
-              <td>{{ survey.nbOfQuestions }} </td>
+              <td class="options2">{{ survey.category }}</td>
+              <td class="options1">{{ survey.nbOfQuestions }} </td>
               <td>
                 <div v-if="$store.state.user.idU === survey.idU || $store.state.user.right=== 2">
                   <button 
@@ -59,6 +61,7 @@
                 </div>
                 <div v-else>
                   <button 
+                      id = "delete"
                       type="button"
                       class="btn btn-danger btn-sm"
                       @click="onVoteSurvey(survey)"
@@ -67,9 +70,10 @@
                 </div>
                 </td>
             </tr>
+            
           </tbody>
         </table>
-
+      </b-card>
 
  </div>
 </template>
@@ -211,20 +215,56 @@ created() {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped lang="scss">
+$mobile-width-limit: 600px;//maximum width for mobile device
+$desktop-width-limit: 1024px;//minimum width for destock device
 #container{
   width: 100%;
   font-size: 20px;
 }
+.options1{
+  display: table-cell;
+}
+
+.options2{
+  display: table-cell;
+}
+#card{
+  margin: 3% 7.5%;
+  padding: 2.5%;
+  max-width: 85%;
+}
+#wherePage{
+  margin:0%;
+  padding: 1%;
+  background-color: #eeeeee;
+}
+
 #listSurvey {
   font-family: Avenir, Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
   color: #2c3e50;
-  width: 70%;
-  margin: 5% 15%;
+  width: 100%;
+  margin:0%;
+
+  td{
+    border-top-width: 1px;
+    border-top-style: solid;
+    border-top-color: #2c3e50;
+  }
 }
 button{
   margin: 2%;
+}
+@media only screen and (max-width: $mobile-width-limit) {
+  .options1, .options2{
+  display: none;
+}
+}
+@media only screen and (min-width: $mobile-width-limit + 1) and (max-width: $desktop-width-limit - 1) {
+  .options1{
+  display: none;
+}
 }
 </style>

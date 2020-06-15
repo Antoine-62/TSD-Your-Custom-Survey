@@ -4,7 +4,7 @@
       <NavBar/>
       <router-view/>
    </div>
-    <Footer/>
+    <Footer class="footer"/>
   </div>
 </template>
 
@@ -23,33 +23,25 @@ export default {
 </script>
 
 <style lang="scss">
-html,body,#app #main {
+html, body {
+  height: 100%;
+}
+body {
+  display: flex;
+  flex-direction: column;
+}
+#app {
   font-family: Avenir, Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
   color: #2c3e50;
-  width: 100%;
-  margin: 0px;
-    min-height: 100%
-}
-#app{
-  position: relative;
-}
-#app::after{
-  display: block;
-  height: 8%; /* Set same as footer's height */
+  flex: 1 0 auto;
 }
 
+.footer{
+   flex-shrink: 0;
+}
 
-Footer{
-   position: absolute;
-   height: 8%;
-   width:100%;
-   bottom:0%;
-}
-body{
-    margin: 0px;
-}
 
 </style>

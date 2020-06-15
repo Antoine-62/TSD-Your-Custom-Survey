@@ -1,19 +1,22 @@
 <template>
- <div>
-    <h1>My profile</h1>
-    <p> Username : {{ $store.state.user.userName }}</p>
-    <p> First Name : {{ $store.state.user.firstName }}</p>
-    <p> Last Name : {{ $store.state.user.lastName }}</p>
-    <p> Birthdate : {{ $store.state.user.birthdate }}</p>
-    <p> Gender : {{ $store.state.user.gender }}</p>
-    <p> Phone : {{ $store.state.user.phone }}</p>
-    <p> Email : {{ $store.state.user.email }}</p>
+<div>
+<h1 id="wherePage">My profile</h1>
+<b-card id="MyProfile">
+    <p id="username"> Username : {{ $store.state.user.userName }}</p>
+    <p id="firstname"> First Name : {{ $store.state.user.firstName }}</p>
+    <p id="lastname"> Last Name : {{ $store.state.user.lastName }}</p>
+    <p id="birthdate"> Birthdate : {{ $store.state.user.birthdate }}</p>
+    <p id="gender"> Gender : {{ $store.state.user.gender }}</p>
+    <p id="phone"> Phone : {{ $store.state.user.phone }}</p>
+    <p id="email"> Email : {{ $store.state.user.email }}</p>
     <button 
                     type="button"
+                    id = "EditProfil"
                     class="btn btn-danger btn-sm"
                     @click="onEditUser(user)"
                     >
                     Edit my profile</button>
+</b-card>
 
     <h1>My Surveys</h1>
     <div v-if="surveys[0]">
@@ -194,6 +197,16 @@ created() {
 #container{
   width: 100%;
   font-size: 20px;
+}
+#wherePage{
+  margin:0%;
+  padding: 1%;
+  background-color: #eeeeee;
+}
+#MyProfile{
+  margin: 5% 20%;
+  padding: 0%;
+  max-width: 60%;
 }
 #listSurvey {
   font-family: Avenir, Helvetica, Arial, sans-serif;

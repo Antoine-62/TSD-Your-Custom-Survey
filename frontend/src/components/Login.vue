@@ -1,6 +1,6 @@
 <template>
- <div>
-    <h1>Sign in</h1>
+ <div id="container">
+    <b-card id="SignIn" header="Sign in">
     <form
      id="app"
      @submit="onSubmit"
@@ -51,6 +51,7 @@
     <p v-if="success" class="success-message">
 		✅ Survey successfully created
     </p>
+    </b-card>
  </div>
 </template>
 
@@ -111,6 +112,17 @@ export default {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped lang="scss">
+#container{
+  min-height: 100%;
+  margin: 10%;
+}
+
+#SignIn{
+  margin: 0% 20%;
+  padding: 0%;
+  max-width: 60%;
+}
+
 [class*='-message'] {
     font-weight: 500;
   }

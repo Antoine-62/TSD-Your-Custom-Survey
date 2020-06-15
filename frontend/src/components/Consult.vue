@@ -1,14 +1,15 @@
 <template>
  <div>
-    <h1>Title : {{this.titleSurvey}}</h1>
-    <h1>Category : {{this.category}}</h1>
+    <h1 id="wherePage"><strong>Title : {{this.titleSurvey}} -
+    Category : {{this.category}}</strong></h1>
     
     
     <apexchart type="bar" height="430" :options="chartOptions" :series="series"></apexchart>
     <div v-for="(question, index) in questions" :key="index">
-        <h2>Question n°{{ question.number }}</h2>
-        <h2>Number of votes : {{ TotalAnswer(question.idQ, question.number) }}</h2>
-        <h2>{{ question.statement }}</h2>
+        <b-card id="card">
+        <h2 class="header">Question n°{{ question.number }}</h2>
+        <h4 :id=question.number>Number of votes : {{ TotalAnswer(question.idQ, question.number) }}</h4>
+        <h3><strong>{{ question.statement }}</strong></h3>
         <ul>
             <li>{{question.answer1}} : {{countAnswer(question.idQ,question.answer1)}}%</li>
             <li>{{question.answer2}} : {{countAnswer(question.idQ,question.answer2)}}%</li>
@@ -16,7 +17,7 @@
             <li v-if="question.answer4 !== ''">{{question.answer4}} : {{countAnswer(question.idQ,question.answer4)}}%</li>
             <li v-if="question.answer5 !== ''">{{question.answer5}} : {{countAnswer(question.idQ,question.answer5)}}%</li>
         </ul>
-              
+        </b-card>   
     </div>
  </div>
 </template>
@@ -45,19 +46,19 @@ export default {
         QuestionArray : [],
         series: [{
             name: 'Answer 1',
-            data: [44, 55]
+            data: [0, 0]
           }, {
             name: 'Answer 2',
-            data: [53, 32]
+            data: [0, 0]
           }, {
             name: 'Answer 3',
-            data: [53, 32]
+            data: [0, 0]
           }, {
             name: 'Answer 4',
-            data: [53, 32]
+            data: [0, 0]
           }, {
             name: 'Answer 5',
-            data: [53, 32]
+            data: [0, 0]
           }],
           
           chartOptions: {
@@ -256,5 +257,20 @@ created() {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped lang="scss">
+#card{
+  margin: 1% 20%;
+  padding: 0%;
+  max-width: 60%;
+  .header{
+  margin:0%;
+  padding: 2%;
+  background-color: #eeecec;
+}
+}
+#wherePage{
+  margin:0%;
+  padding: 1%;
+  background-color: #eeeeee;
+}
 
 </style>

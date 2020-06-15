@@ -33,6 +33,7 @@ To run the script for seeding data :
 pip install Flask-Seeder
 flask seed run
 ```
+**Attention :** There are already data in the database (we use sqlite), so it's not necessary to run the seed script (but you can still do it if you want). By the way, here the credentials to access administrator account : Username : Antoine123 - Password : 12345 
 Now you have some data in your database tables. You can check it by watching the terminal which displays all inserted data in tables.  
 Then, we can run the tests :
 ```

@@ -1,6 +1,6 @@
 <template>
  <div>
-    <h1 id="wherePage">You are Voting <strong>{{this.titleSurvey}} - Category : {{this.category}}</strong></h1>
+    <h1 id="wherePage">You are Voting - <strong>{{this.titleSurvey}} - Category : {{this.category}}</strong></h1>
     <b-card id="card">
     <div class="NumberQ"><h3>Question n°{{question.number}}</h3></div>
     <form

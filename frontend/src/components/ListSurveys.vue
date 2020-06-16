@@ -1,7 +1,7 @@
 <template>
  <div id="container">
     <h1 id="wherePage">Surveys List</h1><br/>
-    <label>Search : </label><input type="text" v-model="search" placeholder="Search title.."/><br/><br/>
+    <label>Search : </label><input id="search" type="text" v-model="search" placeholder="Search title.."/><br/><br/>
     <label>Category : </label><select
             id="Category"
             name="Category"
@@ -28,7 +28,7 @@
             
             <tr v-for="(survey, index) in filteredList" :key="index">
               <td>{{ survey.title }}</td>
-              <td class="options2">{{ survey.category }}</td>
+              <td :id="survey.title" class="options2">{{ survey.category }}</td>
               <td class="options1">{{ survey.nbOfQuestions }} </td>
               <td>
                 <div v-if="$store.state.user.idU === survey.idU || $store.state.user.right=== 2">

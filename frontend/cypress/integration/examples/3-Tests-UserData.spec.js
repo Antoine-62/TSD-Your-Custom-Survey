@@ -1,10 +1,10 @@
-describe('Authentification', () => {
+describe("Test to check if the user's data are propers", () => {
     beforeEach(() => {
       cy.visit('http://192.168.1.14:8080/')
       cy.contains('YCS')
       cy.contains('Sign in').click()
         cy.get('#Username').type("lolo")
-        cy.get('#Password').type("lolo")
+        cy.get('#Password').type("lolo22")
         cy.contains('Submit').click()
         cy.location().should((loc)=>{
           expect(loc.pathname).to.eq('/ListSuveys')
@@ -81,6 +81,23 @@ describe('Authentification', () => {
                 expect(loc.pathname).to.eq('/myProfile')
               })
           })
+          cy.get('#username').should("contain","lolo")
+          cy.get('#firstname').should("contain","Antoine")
+          cy.get('#lastname').should("contain","Landrieu")
+          cy.get('#birthdate').should("contain","1999-12-27")
+          cy.get('#gender').should("contain","Male")
+          cy.get('#phone').should("contain","0652411698")
+          cy.get('#email').should("contain","antoine@gmail.com")
+        cy.log("We reload the page to check if we keep our data")
+        cy.reload()
+        cy.get('#username').should("contain","lolo")
+          cy.get('#firstname').should("contain","Antoine")
+          cy.get('#lastname').should("contain","Landrieu")
+          cy.get('#birthdate').should("contain","1999-12-27")
+          cy.get('#gender').should("contain","Male")
+          cy.get('#phone').should("contain","0652411698")
+          cy.get('#email').should("contain","antoine@gmail.com")
+
         
       })
 

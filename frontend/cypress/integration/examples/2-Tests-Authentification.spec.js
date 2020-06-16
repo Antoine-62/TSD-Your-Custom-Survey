@@ -1,4 +1,4 @@
-describe('Authentification', () => {
+describe('Authentification (Sign up + Sign in)', () => {
     beforeEach(() => {
       cy.visit('http://192.168.1.14:8080/')
     })
@@ -109,8 +109,8 @@ describe('Authentification', () => {
         cy.get('#Birthdate').type("1999-12-27")
         cy.get('#Phone').type("0123456789")
         cy.get('#Email').type("lolo@kk.fd")
-        cy.get('#Password').type("lolo")
-        cy.get('#ConfirmPassword').type("lolo")
+        cy.get('#Password').type("lolo22")
+        cy.get('#ConfirmPassword').type("lolo22")
         cy.get('#Gender1').check()
         cy.contains('Submit').click().then(() => {
             cy.get('.swal-text').contains("You have been registered!") 
@@ -155,7 +155,7 @@ describe('Authentification', () => {
   
       it('Log in with wrong password', () => {
         cy.contains('Sign in').click()
-        cy.get('#Username').type("lolo2")
+        cy.get('#Username').type("lolo")
         cy.get('#Password').type("lol")
         cy.contains('Submit').click().then(() => {
           cy.get('.swal-text').contains('The password is wrong') 
@@ -167,7 +167,7 @@ describe('Authentification', () => {
       it('Log in with proper credentials', () => {
         cy.contains('Sign in').click()
         cy.get('#Username').type("lolo")
-        cy.get('#Password').type("lolo")
+        cy.get('#Password').type("lolo22")
         cy.contains('Submit').click()
         cy.location().should((loc)=>{
           expect(loc.pathname).to.eq('/ListSuveys')

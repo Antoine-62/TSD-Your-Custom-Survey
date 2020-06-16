@@ -12,7 +12,7 @@ class AUserSeeder(Seeder):
     fakerUser = Faker(
       cls=User,
       init={
-        "userName": "Antoine123",
+        "userName": "Antoine12",
         "lastName": "Landrieu",
         "firstName": "Antoine",
         "birthdate": "17-03-1998",

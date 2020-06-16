@@ -29,7 +29,7 @@ export default new Vuex.Store({
     },
     user_edit(state, payload){
         state.status = 'success'
-        state.user.firstname = payload.firstname
+        state.user.firstName = payload.firstName
         state.user.lastName = payload.lastName
         state.user.birthdate = payload.birthdate
         state.user.gender = payload.gender

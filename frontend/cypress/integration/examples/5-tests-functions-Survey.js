@@ -1,9 +1,9 @@
-describe('Create Survey', () => {
+describe('Test functions related to Survey', () => {
     beforeEach(() => {
       cy.visit('http://192.168.1.14:8080/')
       cy.contains('Sign in').click()
-      cy.get('#Username').type("lolo2")
-      cy.get('#Password').type("toto123")
+      cy.get('#Username').type("lolo")
+      cy.get('#Password').type("lolo22")
       cy.contains('Submit').click()
       cy.wait(300)
       cy.location().should((loc)=>{
@@ -15,11 +15,11 @@ describe('Create Survey', () => {
       })
     })
     
-    /*  it('Submit witout enter parameter', () => {
+      it('Submit witout enter parameter', () => {
         cy.get("form").submit().then(() => {
             cy.get('.error-message')
           })
-        cy.get('#name').type("unit test").should("have.value","unitTest");
+        cy.get('#name').type("unitTest").should("have.value","unitTest");
         cy.get("form").submit().then(() => {
             cy.get('.error-message')
           })
@@ -78,9 +78,9 @@ describe('Create Survey', () => {
           })
         
         
-      })*/
+      })
 
-     /*it('Create Survey with 2 questions', () => {
+     it('Create Survey with 2 questions', () => {
         cy.get('#Category').select('Health').should("have.value","Health");
         cy.get('#name').type("unitTest").should("have.value","unitTest");
         cy.get("form").submit().then(() => {
@@ -269,7 +269,7 @@ describe('Create Survey', () => {
               })
               cy.get("#listSurvey").not().contains("Right now, are you hungry?")
             
-          })*/
+          })
 
           it('Vote the UPDATED survey (check if answers and question have been udapted correctly)', () => {
             cy.visit('http://192.168.1.14:8080/')
@@ -327,7 +327,7 @@ describe('Create Survey', () => {
 
     
 
-    /*it('Delete the survey', () => {
+    it('Delete the survey', () => {
         cy.contains('Surveys List').click()
         cy.contains('Delete').click().then(() => {
             cy.get('.swal-title').contains('Are you sure to have to delete this survey?') 
@@ -337,6 +337,6 @@ describe('Create Survey', () => {
                 cy.get('.swal-button').click()
            
         })
-    })*/
+    })
   
    })

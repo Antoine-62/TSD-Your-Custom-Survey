@@ -1,4 +1,4 @@
-describe('Authentification', () => {
+describe('Test for delete user function', () => {
     beforeEach(() => {
       cy.visit('http://192.168.1.14:8080/')
       cy.contains('YCS')
@@ -33,7 +33,7 @@ describe('Authentification', () => {
           cy.get('#lolo').contains("Delete").click().then(() => {
             cy.get('.swal-title').contains('Are you sure to have to delete this user?') 
             cy.get('.swal-button--confirm').click().then(()=> {
-                cy.wait(200)
+                cy.wait(500)
                 cy.get('.swal-title').contains('Deleted!') 
                 cy.get('.swal-text').contains('The user has been deleted.') 
                 cy.get('.swal-button').click()
